@@ -22,7 +22,6 @@ import androidx.media3.common.TrackSelectionParameters
 import androidx.media3.common.audio.AudioProcessor
 import androidx.media3.common.audio.AudioProcessorChain
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.decoder.ffmpeg.FfmpegAudioRenderer
 import androidx.media3.exoplayer.BaseRenderer
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.ExoPlayer
@@ -206,11 +205,6 @@ class ExoStateHolder : KoinComponent {
 
 		return RenderersFactory { eventHandler, _, eventListener, _, _ ->
 			arrayOf<BaseRenderer>(
-				FfmpegAudioRenderer(
-					eventHandler,
-					eventListener,
-					audioSink
-				),
 				MediaCodecAudioRenderer(
 					context,
 					MediaCodecSelector.DEFAULT,

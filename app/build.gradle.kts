@@ -54,6 +54,12 @@ android {
 	}
 
 	signingConfigs {
+		create("debugConfig") {
+			storeFile = file("${rootDir}/debug.keystore")
+			storePassword = "android"
+			keyAlias = "androiddebugkey"
+			keyPassword = "android"
+		}
 		create("release") {
 			keyAlias = System.getenv("SIGNING_KEY_ALIAS")
 			keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
@@ -78,6 +84,8 @@ android {
 		debug {
 			applicationIdSuffix = ".debug"
 			resValue("string", "app_name", "Navic (Dev)")
+			signingConfig = signingConfigs.getByName("debugConfig")
+			buildConfigField("boolean", "FDROID", "false")
 		}
 	}
 
@@ -114,20 +122,6 @@ android {
 		buildConfigField("String", "GIT_BRANCH_NAME", commitBranchName?.wrapString() ?: "\"unknown\"")
 	}
 
-	flavorDimensions += "version"
-	productFlavors {
-		create("default") {
-			dimension = "version"
-			isDefault = true
-			buildConfigField("boolean", "FDROID", "false")
-		}
-		create("fdroid") {
-			dimension = "version"
-			description = "removes Discord RPC and update checker features"
-			buildConfigField("boolean", "FDROID", "true")
-		}
-	}
-
 	packaging {
 		resources {
 			excludes += "/okhttp3/**"
@@ -158,26 +152,6 @@ android {
 	}
 }
 
-androidComponents {
-	onVariants { variant ->
-		variant.outputs.forEach { output ->
-			output.outputFileName = if (variant.flavorName == "fdroid") {
-				"Navic.fdroid.apk"
-			} else {
-				"Navic.apk"
-			}
-		}
-	}
-	onVariants(selector().withBuildType("release")) {
-		it.packaging.resources.excludes.apply {
-			add("/**/*.version")
-			add("/kotlin-tooling-metadata.json")
-			add("/DebugProbesKt.bin")
-			add("/**/*.kotlin_builtins")
-		}
-	}
-}
-
 room3 {
 	schemaDirectory("$projectDir/schemas")
 }
@@ -203,7 +177,6 @@ dependencies {
 	implementation(libs.androidx.media3.exoplayer)
 	implementation(libs.androidx.media3.session)
 	implementation(libs.androidx.media3.datasource.okhttp)
-	implementation(libs.androidx.media3.decoder.ffmpeg)
 	implementation(libs.androidx.annotation)
 	implementation(libs.androidx.recyclerview)
 	implementation(libs.androidx.glance.appwidget)
@@ -244,7 +217,7 @@ dependencies {
 	implementation(libs.koin.compose.viewmodel)
 	implementation(libs.koin.androidx.workmanager)
 	implementation(libs.subsonicKotlin)
-	"defaultImplementation"(libs.antisocialcord)
+	implementation(libs.antisocialcord)
 	ksp(libs.androidx.room3.compiler)
 	implementation(libs.cryptohash)
 	implementation(libs.mimetypes)

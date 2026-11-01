@@ -6,39 +6,20 @@
 
 @file:Suppress("UnstableApiUsage")
 
-import androidx.media3.buildlogic.includeMedia3
-
 rootProject.name = "Navic"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
-	includeBuild("vendor/androidx-media/build-logic-settings")
 	repositories {
-		google {
-			mavenContent {
-				includeGroupAndSubgroups("androidx")
-				includeGroupAndSubgroups("com.android")
-				includeGroupAndSubgroups("com.google")
-			}
-		}
+		google()
 		mavenCentral()
 		gradlePluginPortal()
 	}
 }
 
-plugins {
-	id("gradlebuild.media3-settings-logic")
-}
-
 dependencyResolutionManagement {
 	repositories {
-		google {
-			mavenContent {
-				includeGroupAndSubgroups("androidx")
-				includeGroupAndSubgroups("com.android")
-				includeGroupAndSubgroups("com.google")
-			}
-		}
+		google()
 		maven {
 			name = "Central Portal Snapshots"
 			url = uri("https://central.sonatype.com/repository/maven-snapshots/")
@@ -58,5 +39,4 @@ dependencyResolutionManagement {
 }
 
 include(":app")
-includeMedia3(file("vendor/androidx-media"))
-includeBuild("vendor/subsonic-kotlin")
+
