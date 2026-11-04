@@ -53,8 +53,9 @@ jobs:
         run: |
           SDKMANAGER="$(command -v sdkmanager || echo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager")"
           yes | "$SDKMANAGER" --licenses > /dev/null
-          "$SDKMANAGER" --install "platforms;android-37" "build-tools;37.0.0" || \
-            "$SDKMANAGER" --install "platforms;android-37"
+          # compileSdk 37.0 is published under a versioned package name: "android-37" does not
+          # exist, only "android-37.0", matching compileSdkMinor in libs.versions.toml.
+          "$SDKMANAGER" --install "platforms;android-37.0" "platform-tools"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
