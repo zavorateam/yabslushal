@@ -25,13 +25,16 @@ import zavorateam.yabslushal.domain.repository.SongRepository
  * @property genres every genre the local library knows about
  * @property moods every mood the local library knows about
  * @property filter the selection being edited, not yet started
+ * @property tempoAvailable false when the library carries no tempo tags at all, so the tempo row
+ * stays hidden instead of offering a choice that can only ever match nothing
  */
 data class MixItUpUiState(
 	val presented: Boolean = false,
 	val genres: List<String> = emptyList(),
 	val moods: List<String> = emptyList(),
 	val filter: MixFilter = MixFilter.NONE,
-	val duration: MixDuration = MixDuration.Any
+	val duration: MixDuration = MixDuration.Any,
+	val tempoAvailable: Boolean = true
 )
 
 /**
@@ -50,7 +53,16 @@ class MixItUpViewModel(
 		viewModelScope.launch {
 			val genres = songRepository.getGenres()
 			val moods = songRepository.getMoods()
-			_state.update { it.copy(genres = genres, moods = moods) }
+			val tempoAvailable = songRepository.hasTempoTags()
+			_state.update {
+				// Falling back to "any tempo" keeps the dialog consistent with the data.
+				it.copy(
+					genres = genres,
+					moods = moods,
+					tempoAvailable = tempoAvailable,
+					filter = if (tempoAvailable) it.filter else it.filter.copy(tempo = MixTempo.Any)
+				)
+			}
 		}
 	}
 

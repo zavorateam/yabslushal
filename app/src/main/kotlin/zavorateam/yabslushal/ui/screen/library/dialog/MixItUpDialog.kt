@@ -61,7 +61,7 @@ fun MixItUpDialog(
 					.fillMaxWidth()
 					.heightIn(max = 460.dp)
 					.verticalScroll(rememberScrollState()),
-				verticalArrangement = Arrangement.spacedBy(12.dp)
+				verticalArrangement = Arrangement.spacedBy(6.dp)
 			) {
 				Text(
 					stringResource(R.string.subtitle_mix_it_up_dialog),
@@ -72,8 +72,8 @@ fun MixItUpDialog(
 				if (state.genres.isNotEmpty()) {
 					SectionTitle(stringResource(R.string.option_mix_it_up_genres))
 					FlowRow(
-						horizontalArrangement = Arrangement.spacedBy(8.dp),
-						verticalArrangement = Arrangement.spacedBy(8.dp)
+						horizontalArrangement = Arrangement.spacedBy(6.dp),
+						verticalArrangement = Arrangement.spacedBy(4.dp)
 					) {
 						state.genres.forEach { genre ->
 							FilterChip(
@@ -88,8 +88,8 @@ fun MixItUpDialog(
 				if (state.moods.isNotEmpty()) {
 					SectionTitle(stringResource(R.string.option_mix_it_up_moods))
 					FlowRow(
-						horizontalArrangement = Arrangement.spacedBy(8.dp),
-						verticalArrangement = Arrangement.spacedBy(8.dp)
+						horizontalArrangement = Arrangement.spacedBy(6.dp),
+						verticalArrangement = Arrangement.spacedBy(4.dp)
 					) {
 						state.moods.forEach { mood ->
 							FilterChip(
@@ -112,13 +112,17 @@ fun MixItUpDialog(
 					onSelect = onDurationChange
 				)
 
-				SectionTitle(stringResource(R.string.option_mix_it_up_tempo))
-				ChoiceGrid(
-					options = MixTempo.entries,
-					selected = state.filter.tempo,
-					label = { stringResource(it.displayName) },
-					onSelect = onTempoChange
-				)
+				// Without tempo tags every option would match nothing, so the row is hidden
+				// instead of offering a choice that can only fail.
+				if (state.tempoAvailable) {
+					SectionTitle(stringResource(R.string.option_mix_it_up_tempo))
+					ChoiceGrid(
+						options = MixTempo.entries,
+						selected = state.filter.tempo,
+						label = { stringResource(it.displayName) },
+						onSelect = onTempoChange
+					)
+				}
 
 				if (state.filter.seedArtist != null) {
 					Row(modifier = Modifier.fillMaxWidth()) {
@@ -166,11 +170,11 @@ private fun <T> ChoiceGrid(
 	label: @Composable (T) -> String,
 	onSelect: (T) -> Unit
 ) {
-	Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+	Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
 		options.chunked(2).forEach { row ->
 			Row(
 				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.spacedBy(8.dp)
+				horizontalArrangement = Arrangement.spacedBy(6.dp)
 			) {
 				row.forEach { option ->
 					FilterChip(
@@ -199,7 +203,7 @@ private fun SectionTitle(text: String) {
 	Text(
 		text,
 		style = MaterialTheme.typography.titleSmall,
-		modifier = Modifier.padding(top = 4.dp)
+		modifier = Modifier.padding(top = 2.dp)
 	)
 }
 

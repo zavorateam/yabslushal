@@ -33,15 +33,38 @@ class SongRepository(
 
 	/** Genres present in the local library, for the Mix It Up filter dialog. */
 	suspend fun getGenres(): List<String> = songDao.getDistinctGenres()
+		.filter { isReadable(it) }
+		.distinct()
+		.sorted()
 
 	/** Moods present in the local library, for the Mix It Up filter dialog. */
 	suspend fun getMoods(): List<String> = songDao.getPackedMoods()
 		?.split("||")
 		.orEmpty()
-		.map { it.trim() }
-		.filter { it.isNotEmpty() }
+		.filter { isReadable(it) }
 		.distinct()
 		.sorted()
+
+	/**
+	 * Tags are user supplied, and some files carry names mangled in a broken encoding - a
+	 * Cyrillic genre decoded as UTF-16 shows up as private use or CJK code points. Such names are
+	 * unusable in a picker, so they are filtered out instead of being offered to the user.
+	 */
+	private fun isReadable(value: String): Boolean {
+		val trimmed = value.trim()
+		if (trimmed.isEmpty()) return false
+		return trimmed.none { char ->
+			char.isISOControl() || char in '\uE000'..'\uF8FF' || char in '\u3400'..'\u9FFF'
+		}
+	}
+
+	/**
+	 * True when at least one song carries a usable tempo.
+	 *
+	 * Navidrome reports `bpm = 0` for every track that has no tempo tag, and most libraries have
+	 * none, so the tempo filter cannot match anything and must not be offered as if it could.
+	 */
+	suspend fun hasTempoTags(): Boolean = songDao.hasTempoTags()
 
 	/**
 	 * Bounded candidate pool for the Mix It Up engine.

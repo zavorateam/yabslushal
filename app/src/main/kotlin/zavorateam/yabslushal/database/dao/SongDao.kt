@@ -127,6 +127,10 @@ interface SongDao {
 	@Query("SELECT DISTINCT genre FROM SongEntity WHERE genre IS NOT NULL AND genre != '' ORDER BY genre")
 	suspend fun getDistinctGenres(): List<String>
 
+	/** True when the library has at least one real tempo value. */
+	@Query("SELECT EXISTS(SELECT 1 FROM SongEntity WHERE bpm IS NOT NULL AND bpm > 0)")
+	suspend fun hasTempoTags(): Boolean
+
 	/** Same pool restricted to songs that are actually stored on the device. */
 	@Query("SELECT * FROM SongEntity WHERE songId IN (:downloadedIds) ORDER BY RANDOM() LIMIT :count")
 	suspend fun getMixCandidatePoolDownloaded(
