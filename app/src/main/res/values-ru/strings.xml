@@ -562,6 +562,7 @@
 
 	<string name="subtitle_mix_it_up_dialog">Выберите, из чего собрать микс. Всё необязательно.</string>
 	<string name="option_mix_it_up_dont_care">Мне всё равно</string>
+	<string name="option_mix_it_up_dont_care_short">Всё равно</string>
 	<string name="option_mix_it_up_genres">Жанры</string>
 	<string name="option_mix_it_up_moods">Настроение</string>
 	<string name="option_mix_it_up_duration">Длина</string>

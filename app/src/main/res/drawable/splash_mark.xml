@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Splash mark: the Yabslushal Y with the waveform bars, no background plate.
+	Only the stroke artwork is drawn, so the mark sits directly on the splash colour. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+	android:width="108dp"
+	android:height="108dp"
+	android:viewportWidth="108"
+	android:viewportHeight="108">
+	<group android:name="bars">
+		<!-- Audio levels -->
+		<path
+			android:name="bar_outer_left"
+			android:pathData="M30.5,52 L30.5,60"
+			android:strokeColor="#FFFFFFFF"
+			android:strokeLineCap="round"
+			android:strokeWidth="5.5" />
+		<path
+			android:name="bar_outer_right"
+			android:pathData="M77.5,52 L77.5,60"
+			android:strokeColor="#FFFFFFFF"
+			android:strokeLineCap="round"
+			android:strokeWidth="5.5" />
+		<path
+			android:name="bar_inner_left"
+			android:pathData="M39.0,46 L39.0,66"
+			android:strokeColor="#FFFFFFFF"
+			android:strokeLineCap="round"
+			android:strokeWidth="5.5" />
+		<path
+			android:name="bar_inner_right"
+			android:pathData="M69.0,46 L69.0,66"
+			android:strokeColor="#FFFFFFFF"
+			android:strokeLineCap="round"
+			android:strokeWidth="5.5" />
+	</group>
+	<!-- The Y mark stays still so the bars read as motion around an anchor. -->
+	<path
+		android:pathData="M46,36 L54,46 L62,36"
+		android:strokeColor="#FFFFFFFF"
+		android:strokeLineCap="round"
+		android:strokeLineJoin="round"
+		android:strokeWidth="7.0" />
+	<path
+		android:pathData="M54,46 L54,70"
+		android:strokeColor="#FFFFFFFF"
+		android:strokeLineCap="round"
+		android:strokeWidth="7.0" />
+</vector>

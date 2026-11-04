@@ -3,8 +3,9 @@
 
 	<style name="Theme.Yabslushal" parent="android:Theme.DeviceDefault.DayNight">
 		<item name="android:windowSplashScreenAnimatedIcon">@drawable/splash</item>
-		<item name="android:windowSplashScreenBackground">@drawable/splash_background</item>
-		<item name="android:windowSplashScreenIconBackgroundColor">@color/splash_icon_background</item>
+		<!-- The mark is drawn without a background plate, so the splash is one flat colour
+			and the bouncing bars are the only thing on screen. -->
+		<item name="android:windowSplashScreenBackground">@color/splash_background</item>
 		<item name="android:windowActionBar">false</item>
 		<item name="android:windowNoTitle">true</item>
 	</style>

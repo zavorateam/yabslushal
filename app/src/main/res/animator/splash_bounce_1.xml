@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Short hop for the outer bars: up, then back exactly where they started. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+	android:interpolator="@android:interpolator/decelerate_quad"
+	android:ordering="sequentially">
+	<objectAnimator
+		android:duration="180"
+		android:propertyName="translateY"
+		android:repeatCount="1"
+		android:repeatMode="reverse"
+		android:valueFrom="0"
+		android:valueTo="-4"
+		android:valueType="floatType" />
+	<objectAnimator
+		android:duration="1"
+		android:propertyName="translateY"
+		android:valueFrom="0"
+		android:valueTo="0"
+		android:valueType="floatType" />
+</set>

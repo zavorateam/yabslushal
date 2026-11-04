@@ -1,42 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Splash mark: the Yabslushal Y with the waveform bars, scaled up from the launcher
-	foreground so the launch animation matches the app icon. -->
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-	android:width="108dp"
-	android:height="108dp"
-	android:viewportWidth="108"
-	android:viewportHeight="108">
-	<!-- Audio levels -->
-	<path
-		android:pathData="M30.5,52 L30.5,60"
-		android:strokeColor="#FFFFFFFF"
-		android:strokeLineCap="round"
-		android:strokeWidth="5.5" />
-	<path
-		android:pathData="M77.5,52 L77.5,60"
-		android:strokeColor="#FFFFFFFF"
-		android:strokeLineCap="round"
-		android:strokeWidth="5.5" />
-	<path
-		android:pathData="M39.0,46 L39.0,66"
-		android:strokeColor="#FFFFFFFF"
-		android:strokeLineCap="round"
-		android:strokeWidth="5.5" />
-	<path
-		android:pathData="M69.0,46 L69.0,66"
-		android:strokeColor="#FFFFFFFF"
-		android:strokeLineCap="round"
-		android:strokeWidth="5.5" />
-	<!-- The Y mark -->
-	<path
-		android:pathData="M46,36 L54,46 L62,36"
-		android:strokeColor="#FFFFFFFF"
-		android:strokeLineCap="round"
-		android:strokeLineJoin="round"
-		android:strokeWidth="7.0" />
-	<path
-		android:pathData="M54,46 L54,70"
-		android:strokeColor="#FFFFFFFF"
-		android:strokeLineCap="round"
-		android:strokeWidth="7.0" />
-</vector>
+<!-- Splash mark: the Yabslushal Y, with the four waveform bars bouncing in place.
+	Each bar animates its own translateY and returns to zero, so the bounce ends
+	exactly where the static launcher mark sits and leaves no visible jump. -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+	android:drawable="@drawable/splash_mark">
+	<!-- Outer bars: short hop -->
+	<target
+		android:name="bar_outer_left"
+		android:animation="@animator/splash_bounce_1" />
+	<target
+		android:name="bar_outer_right"
+		android:animation="@animator/splash_bounce_1" />
+	<!-- Inner bars: taller hop, so the group never moves as one block -->
+	<target
+		android:name="bar_inner_left"
+		android:animation="@animator/splash_bounce_2" />
+	<target
+		android:name="bar_inner_right"
+		android:animation="@animator/splash_bounce_2" />
+</animated-vector>
