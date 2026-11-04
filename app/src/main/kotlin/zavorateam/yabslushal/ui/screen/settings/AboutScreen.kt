@@ -1,0 +1,178 @@
+/*
+ * Navic, a Subsonic music streaming app for Android
+ * Copyright (c) 2026 paige
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
+package zavorateam.yabslushal.ui.screen.settings
+
+import android.os.Build
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import org.koin.compose.koinInject
+import zavorateam.yabslushal.BuildConfig
+import zavorateam.yabslushal.R
+import zavorateam.yabslushal.di.LocalSizeClass
+import zavorateam.yabslushal.domain.manager.runtime.PreferenceManager
+import zavorateam.yabslushal.ui.component.common.SegmentedListItem
+import zavorateam.yabslushal.ui.component.common.SegmentedListItemDefaults
+import zavorateam.yabslushal.ui.component.dialog.LinkConfirmationDialog
+import zavorateam.yabslushal.ui.component.layout.NestedTopBar
+import zavorateam.yabslushal.ui.component.layout.NestedTopBarDefaults
+import zavorateam.yabslushal.ui.screen.settings.component.SettingsGroup
+import zavorateam.yabslushal.ui.screen.settings.component.SettingsGroupDefaults
+import zavorateam.yabslushal.ui.screen.settings.component.SettingsNavItem
+import zavorateam.yabslushal.ui.screen.settings.component.SettingsToggleItem
+
+const val CODEBERG_BASE_URL = "https://codeberg.org/paige/Navic/"
+
+@Composable
+fun SettingsAboutScreen() {
+	val preferenceManager = koinInject<PreferenceManager>()
+
+	@Suppress("DEPRECATION")
+	val clipboard = LocalClipboardManager.current
+
+	val context = LocalContext.current
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+
+	var linkToOpen by rememberSaveable { mutableStateOf<String?>(null) }
+
+	Scaffold(
+		topBar = {
+			NestedTopBar(
+				title = { Text(stringResource(R.string.title_about)) },
+				navigationAction = {
+					if (!hideBack) {
+						NestedTopBarDefaults.NavigationAction()
+					}
+				}
+			)
+		}
+	) { innerPadding ->
+		Column(
+			modifier = Modifier
+				.padding(innerPadding)
+				.verticalScroll(rememberScrollState())
+				.padding(horizontal = 16.dp),
+			verticalArrangement = Arrangement.spacedBy(SettingsGroupDefaults.GapBetweenGroups)
+		) {
+			SettingsGroup {
+				val text = buildString {
+					append(
+						stringResource(
+							R.string.info_app_version,
+							context.packageManager
+								.getPackageInfo(context.packageName, 0)
+								.versionName.toString()
+						) + "\n"
+					)
+					append("Android ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
+				}
+				SegmentedListItem(
+					onClick = { clipboard.setText(AnnotatedString(text)) },
+					shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = 1),
+					content = { Text(text) }
+				)
+			}
+
+			// TODO: make this less ass
+			if (BuildConfig.GIT_COMMIT_HASH != "unknown") {
+				val commitLink = "${CODEBERG_BASE_URL}commit/${BuildConfig.GIT_COMMIT_HASH}"
+				val branchName = BuildConfig.GIT_BRANCH_NAME
+				val commitAuthor = BuildConfig.GIT_COMMIT_AUTHOR
+
+				SettingsGroup {
+					SettingsNavItem(
+						onClick = { linkToOpen = commitLink },
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = 4),
+						content = { Text(stringResource(R.string.title_commit_hash)) },
+						supportingContent = { Text(BuildConfig.GIT_COMMIT_HASH.slice(0..6)) }
+					)
+					SettingsNavItem(
+						onClick = { linkToOpen = commitLink },
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 1, count = 4),
+						content = { Text(stringResource(R.string.title_commit_message)) },
+						supportingContent = {
+							Text(
+								text = BuildConfig.GIT_COMMIT_MESSAGE.split("\n").firstOrNull()
+									?: "unknown",
+								maxLines = 1,
+								overflow = TextOverflow.Ellipsis
+							)
+						}
+					)
+					SettingsNavItem(
+						onClick = { linkToOpen = "${CODEBERG_BASE_URL}src/branch/${branchName}" },
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 2, count = 4),
+						content = { Text(stringResource(R.string.title_branch_name)) },
+						supportingContent = { Text(BuildConfig.GIT_BRANCH_NAME) }
+					)
+					SettingsNavItem(
+						onClick = {
+							linkToOpen =
+								"${CODEBERG_BASE_URL}commits/${branchName}/?author=${commitAuthor}"
+						},
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 3, count = 4),
+						content = { Text(stringResource(R.string.title_commit_author)) },
+						supportingContent = { Text(commitAuthor) }
+					)
+				}
+			}
+
+			SettingsGroup {
+				SettingsNavItem(
+					onClick = { linkToOpen = "https://codeberg.org/paige/Navic" },
+					shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = 3),
+					content = { Text(stringResource(R.string.title_codeberg)) }
+				)
+				SettingsNavItem(
+					onClick = { linkToOpen = "https://matrix.to/#/#navic:suicide.diy" },
+					shapes = SegmentedListItemDefaults.segmentedShapes(index = 1, count = 3),
+					content = { Text(stringResource(R.string.title_matrix_space)) }
+				)
+				SettingsNavItem(
+					onClick = { linkToOpen = "https://discord.gg/TBcnNX66PH" },
+					shapes = SegmentedListItemDefaults.segmentedShapes(index = 2, count = 2),
+					content = { Text(stringResource(R.string.title_discord_server)) }
+				)
+			}
+
+			if (!BuildConfig.FDROID) {
+				SettingsGroup {
+					SettingsToggleItem(
+						content = { Text(stringResource(R.string.option_check_for_updates)) },
+						supportingContent = { Text(stringResource(R.string.subtitle_check_for_updates)) },
+						checked = preferenceManager.checkForUpdates,
+						onCheckedChange = { preferenceManager.checkForUpdates = it },
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = 1)
+					)
+				}
+			}
+		}
+	}
+
+	LinkConfirmationDialog(
+		linkToOpen = linkToOpen,
+		onDismissRequest = { linkToOpen = null }
+	)
+}

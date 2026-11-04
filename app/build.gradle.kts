@@ -36,7 +36,7 @@ val isTaskRelease =
 	gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
 
 android {
-	namespace = "paige.navic"
+	namespace = "zavorateam.yabslushal"
 	compileSdk = libs.versions.android.compileSdk.get().toInt()
 	compileSdkMinor = libs.versions.android.compileSdkMinor.get().toInt()
 
@@ -46,7 +46,7 @@ android {
 	}
 
 	defaultConfig {
-		applicationId = "paige.navic"
+		applicationId = "zavorateam.yabslushal"
 		minSdk = libs.versions.android.minSdk.get().toInt()
 		targetSdk = libs.versions.android.targetSdk.get().toInt()
 		versionCode = 61
@@ -149,7 +149,7 @@ android {
 
 	testOptions {
 		unitTests {
-			// android.util.Log (used by paige.navic.util.Logger) is a stub on the JVM;
+			// android.util.Log (used by zavorateam.yabslushal.util.Logger) is a stub on the JVM;
 			// return default values instead of throwing "not mocked".
 			isReturnDefaultValues = true
 		}

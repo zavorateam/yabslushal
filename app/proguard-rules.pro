@@ -4,4 +4,4 @@
 -keepattributes *Annotation*
 
 -keep class * extends androidx.glance.appwidget.GlanceAppWidget { *; }
--keepnames class paige.navic.**,dev.zt64.** { *; }
+-keepnames class zavorateam.yabslushal.**,dev.zt64.** { *; }
