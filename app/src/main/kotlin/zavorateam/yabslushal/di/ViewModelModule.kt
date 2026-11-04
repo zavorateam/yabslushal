@@ -59,7 +59,8 @@ val viewModelModule = module {
 			snackBarManager = get(),
 			audioGainManager = get(),
 			streamCacheManager = get(),
-			connectivityManager = get()
+			connectivityManager = get(),
+			reachability = get()
 		)
 	}
 	single<YabslushalDnsResolver> {

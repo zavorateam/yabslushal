@@ -127,6 +127,15 @@ class PreferenceManager(
 	var checkForUpdates by preference(true)
 	var explicitContentPlayback by preference(ExplicitContentPlayback.Allowed)
 	var autoFillQueue by preference(false)
+
+	/** Enables the feature aware Mix It Up queue engine instead of a single random pick. */
+	var mixItUpEnabled by preference(false)
+
+	/** How far a pick may stray from its cluster centre: 0 = tight, 1 = wide spread. */
+	var mixItUpVariability by preference(0.5f)
+
+	/** How often the walk jumps to another similar cluster: 0 = stay, 1 = switch every step. */
+	var mixItUpSwitchRate by preference(0.3f)
 	var shushQueueDuplicateDialog by preference(false)
 
 	// navigation bar settings

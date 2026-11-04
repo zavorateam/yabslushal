@@ -42,6 +42,7 @@ import zavorateam.yabslushal.domain.manager.runtime.PreferenceManager
 import zavorateam.yabslushal.domain.manager.session.DownloadManager
 import zavorateam.yabslushal.domain.manager.session.SessionManager
 import zavorateam.yabslushal.domain.manager.session.connectivity.ConnectivityManager
+import zavorateam.yabslushal.domain.manager.session.connectivity.ReachabilityFlow
 import zavorateam.yabslushal.domain.manager.ui.SnackBarManager
 import zavorateam.yabslushal.domain.model.DomainAlbum
 import zavorateam.yabslushal.domain.model.DomainExplicitStatus
@@ -50,6 +51,7 @@ import zavorateam.yabslushal.domain.model.DomainSong
 import zavorateam.yabslushal.domain.model.DomainSongCollection
 import zavorateam.yabslushal.domain.model.settings.ExplicitContentPlayback
 import zavorateam.yabslushal.domain.model.settings.ReplayGainMode
+import zavorateam.yabslushal.domain.mix.MixItUpEngine
 import zavorateam.yabslushal.domain.repository.PlayerStateRepository
 import zavorateam.yabslushal.domain.repository.SongRepository
 import zavorateam.yabslushal.playback.exoplayer.ExoStateHolder
@@ -76,11 +78,18 @@ class MediaPlayer(
 	private val sessionManager: SessionManager,
 	private val snackBarManager: SnackBarManager,
 	private val streamCacheManager: StreamCacheManager,
-	private val connectivityManager: ConnectivityManager
+	private val connectivityManager: ConnectivityManager,
+	private val reachability: ReachabilityFlow
 ) {
 	private val _uiState = MutableStateFlow(PlayerUiState())
 	val uiState: StateFlow<PlayerUiState> = _uiState.asStateFlow()
 	private val scope = CoroutineScope(Dispatchers.Main)
+
+	/** Ids recently handed to the queue, kept small to avoid immediate repeats. */
+	private val recentlyQueuedIds = ArrayDeque<String>()
+	private val recentWindowSize = 12
+	private val mixBatchSize = 5
+	private val mixStartBatchSize = 20
 
 	private var controller: MediaController? = null
 	private var controllerFuture: ListenableFuture<MediaController>? = null
@@ -240,10 +249,69 @@ class MediaPlayer(
 
 		if (remainingCount <= 1) {
 			scope.launch {
-				val randomSongs = songRepository.getRandomSongsList(1)
-				addToQueue(randomSongs, notify = false)
+				val nextSongs = if (preferenceManager.mixItUpEnabled) {
+					buildMixItUpBatch(state)
+				} else {
+					songRepository.getRandomSongsList(1)
+				}
+				if (nextSongs.isNotEmpty()) addToQueue(nextSongs, notify = false)
 			}
 		}
+	}
+
+	/**
+	 * Builds the next batch with the local Mix It Up engine.
+	 *
+	 * The engine works on a bounded pool and returns ids only, so the queue is filled with a
+	 * handful of coherent tracks instead of hitting `ORDER BY RANDOM()` for every single song.
+	 * When the engine cannot produce anything (empty library, all candidates filtered out) the
+	 * previous single random pick is used, so the old behaviour is never lost.
+	 */
+	private suspend fun buildMixItUpBatch(state: PlayerUiState): List<DomainSong> {
+		val mix = runCatching {
+			val downloadedIds = downloadManager.downloadedSongs.value.keys
+			// Offline means the downloaded files are the only playable source.
+			val offlineOnly = !reachability.isReachable.value
+
+			val pool = songRepository.getMixCandidatePool(
+				count = MixItUpEngine.poolSize,
+				downloadedIds = if (offlineOnly) downloadedIds.toList() else null
+			)
+
+			val excluded = buildSet {
+				// never repeat the playing track, the queue content or the short replay window
+				state.currentSong?.let { add(it.id) }
+				state.queue.forEach { add(it.id) }
+				addAll(recentlyQueuedIds)
+			}
+
+			val candidates = pool.filter { song ->
+				song.id !in excluded &&
+					(preferenceManager.explicitContentPlayback != ExplicitContentPlayback.Skip ||
+						song.explicitStatus != DomainExplicitStatus.Explicit) &&
+					(!offlineOnly || song.id in downloadedIds)
+			}
+
+			MixItUpEngine().buildMix(
+				candidates = candidates,
+				count = mixBatchSize,
+				variability = preferenceManager.mixItUpVariability.toDouble(),
+				switchRate = preferenceManager.mixItUpSwitchRate.toDouble(),
+				seedState = System.nanoTime()
+			)
+		}.getOrElse { error ->
+			Logger.w("MediaPlayer", "Mix It Up failed, falling back to random", error)
+			emptyList()
+		}
+
+		if (mix.isEmpty()) return songRepository.getRandomSongsList(1)
+
+		val byId = songRepository.getMixCandidatePool(MixItUpEngine.poolSize).associateBy { it.id }
+		val songs = mix.mapNotNull { byId[it] }
+		recentlyQueuedIds.addAll(mix)
+		while (recentlyQueuedIds.size > recentWindowSize) recentlyQueuedIds.removeFirst()
+
+		return songs.ifEmpty { songRepository.getRandomSongsList(1) }
 	}
 
 	fun checkDuplicate(
@@ -998,6 +1066,53 @@ class MediaPlayer(
 				isLoading = true
 			)
 		}
+	}
+
+	/**
+	 * Starts playback from a freshly generated Mix It Up batch.
+	 *
+	 * Builds on the local library only, so it also works offline and inside a slow network.
+	 * When the engine cannot produce anything, playback falls back to the plain shuffle.
+	 */
+	fun startMixItUp() = this@MediaPlayer.launch {
+		val state = uiState.value
+
+		val downloadedIds = downloadManager.downloadedSongs.value.keys
+		val offlineOnly = !reachability.isReachable.value
+
+		val pool = songRepository.getMixCandidatePool(
+			count = MixItUpEngine.poolSize,
+			downloadedIds = if (offlineOnly) downloadedIds.toList() else null
+		)
+
+		val candidates = pool.filter { song ->
+			(preferenceManager.explicitContentPlayback != ExplicitContentPlayback.Skip ||
+				song.explicitStatus != DomainExplicitStatus.Explicit) &&
+				(!offlineOnly || song.id in downloadedIds)
+		}
+
+		val ids = MixItUpEngine().buildMix(
+			candidates = candidates,
+			count = mixStartBatchSize.coerceAtMost(candidates.size.coerceAtLeast(1)),
+			variability = preferenceManager.mixItUpVariability.toDouble(),
+			switchRate = preferenceManager.mixItUpSwitchRate.toDouble(),
+			seedState = System.nanoTime()
+		)
+
+		val byId = candidates.associateBy { it.id }
+		val songs = ids.mapNotNull { byId[it] }
+
+		recentlyQueuedIds.clear()
+		recentlyQueuedIds.addAll(ids)
+		loadingCollectionId = null
+
+		if (songs.isEmpty()) {
+			shufflePlay(songRepository.getMixCandidatePool(mixStartBatchSize))
+		} else {
+			shufflePlay(songs)
+		}
+		// Keep the same continuation behaviour as a normal shuffle start.
+		checkAndAutoFillQueue()
 	}
 
 	fun shufflePlay(collection: DomainSongCollection) = this@MediaPlayer.launch {

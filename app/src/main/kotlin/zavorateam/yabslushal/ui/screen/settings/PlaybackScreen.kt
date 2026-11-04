@@ -116,6 +116,56 @@ fun SettingsPlaybackScreen() {
 					)
 				}
 
+				SettingsGroup(title = { Text(stringResource(R.string.title_mix_it_up_settings)) }) {
+					val mixEnabled = preferenceManager.mixItUpEnabled
+					val mixCount = if (mixEnabled) 3 else 1
+
+					SettingsToggleItem(
+						checked = mixEnabled,
+						onCheckedChange = { preferenceManager.mixItUpEnabled = it },
+						content = { Text(stringResource(R.string.option_mix_it_up_enabled)) },
+						supportingContent = {
+							Text(stringResource(R.string.subtitle_mix_it_up_enabled))
+						},
+						shapes = SegmentedListItemDefaults.segmentedShapes(
+							index = 0,
+							count = mixCount
+						)
+					)
+
+					AnimatedVisibility(visible = mixEnabled) {
+						SettingsSliderItem(
+							value = preferenceManager.mixItUpVariability,
+							valueRange = 0f..1f,
+							onValueChange = { preferenceManager.mixItUpVariability = it },
+							trailingContent = {
+								Text("${(preferenceManager.mixItUpVariability * 100).roundToInt()}%")
+							},
+							content = { Text(stringResource(R.string.option_mix_it_up_variability)) },
+							shapes = SegmentedListItemDefaults.segmentedShapes(
+								index = 1,
+								count = mixCount
+							)
+						)
+					}
+
+					AnimatedVisibility(visible = mixEnabled) {
+						SettingsSliderItem(
+							value = preferenceManager.mixItUpSwitchRate,
+							valueRange = 0f..1f,
+							onValueChange = { preferenceManager.mixItUpSwitchRate = it },
+							trailingContent = {
+								Text("${(preferenceManager.mixItUpSwitchRate * 100).roundToInt()}%")
+							},
+							content = { Text(stringResource(R.string.option_mix_it_up_switch_rate)) },
+							shapes = SegmentedListItemDefaults.segmentedShapes(
+								index = 2,
+								count = mixCount
+							)
+						)
+					}
+				}
+
 				if (!BuildConfig.FDROID) {
 					SettingsGroup(title = { Text(stringResource(R.string.title_integrations)) }) {
 						val enableDiscordIntegration = preferenceManager.enableDiscordIntegration

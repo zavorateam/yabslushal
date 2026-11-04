@@ -210,7 +210,13 @@ fun LibraryScreen() {
 				genresState = genresLazyItems,
 				statsState = statsState,
 
-				sectionOrder = libraryLayout.sections
+				sectionOrder = libraryLayout.sections,
+
+				onStartMixItUp = {
+					// A quick start must never wait on the network: build from whatever is
+					// already in the local library, and let the queue engine keep it going.
+					player.startMixItUp()
+				}
 			)
 		}
 	}

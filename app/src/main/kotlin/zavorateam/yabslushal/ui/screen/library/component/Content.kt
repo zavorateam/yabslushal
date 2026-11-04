@@ -43,6 +43,7 @@ import zavorateam.yabslushal.ui.icons.Icons
 import zavorateam.yabslushal.ui.icons.outlined.Heart
 import zavorateam.yabslushal.ui.icons.outlined.History
 import zavorateam.yabslushal.ui.icons.outlined.LibraryAdd
+import zavorateam.yabslushal.ui.icons.outlined.QueuePlayNext
 import zavorateam.yabslushal.ui.icons.outlined.Shuffle
 import zavorateam.yabslushal.ui.navigation.Screen
 import zavorateam.yabslushal.ui.screen.album.component.AlbumListScreenGridItem
@@ -98,7 +99,10 @@ fun LibraryScreenContent(
 	statsState: StatisticsState,
 
 	// configurable layout of the big sections
-	sectionOrder: List<LibrarySection> = LibraryLayoutConfig.default.sections
+	sectionOrder: List<LibrarySection> = LibraryLayoutConfig.default.sections,
+
+	// starts a locally generated Mix It Up queue
+	onStartMixItUp: () -> Unit = {}
 ) {
 	LazyVerticalGrid(
 		modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -109,6 +113,12 @@ fun LibraryScreenContent(
 		state = state
 	) {
 		// The four quick actions stay fixed above the configurable sections.
+		// Mix It Up replaces the old "random albums" quick action: a grid of randomly ordered
+		// albums wasted the slot, while this is the real "play me something" entry point.
+		mixItUpCard(
+			icon = Icons.Outlined.QueuePlayNext,
+			onStart = onStartMixItUp
+		)
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.LibraryAdd,
 			label = R.string.option_sort_newest,
@@ -116,22 +126,16 @@ fun LibraryScreenContent(
 			start = true
 		)
 		libraryScreenOverviewButton(
-			icon = Icons.Outlined.Shuffle,
-			label = R.string.option_sort_random,
-			destination = Screen.AlbumList(true, DomainAlbumListType.Random),
-			start = false
-		)
-		libraryScreenOverviewButton(
 			icon = Icons.Outlined.Heart,
 			label = R.string.option_sort_starred,
 			destination = Screen.Starred(),
-			start = true
+			start = false
 		)
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.History,
 			label = R.string.option_sort_frequent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
-			start = false
+			start = true
 		)
 
 		// Single renderer: the order and visibility come straight from the saved layout, there
@@ -214,9 +218,9 @@ private fun LazyGridScope.librarySection(
 ) {
 	when (id) {
 		LibrarySection.Id.MIX_IT_UP -> {
-			// Mix It Up is an entry point that needs the whole collection list to build a mix
-			// from. Until that data is available the section renders nothing instead of a
-			// broken card.
+			// Mix It Up is rendered as the fixed card above the quick actions, because it is an
+			// always available entry point rather than a data section. Keeping the id here means
+			// the entry still disappears from the layout editor list without duplicating the card.
 		}
 
 		LibrarySection.Id.RECENT_ALBUMS -> horizontalSection(

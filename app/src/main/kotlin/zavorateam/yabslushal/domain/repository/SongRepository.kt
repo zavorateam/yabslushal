@@ -14,6 +14,7 @@ import zavorateam.yabslushal.database.mapper.toDomainModel
 import zavorateam.yabslushal.database.paging.createPagedFlow
 import zavorateam.yabslushal.database.query.toSqlQuery
 import zavorateam.yabslushal.domain.manager.session.SyncManager
+import zavorateam.yabslushal.domain.mix.MixItUpEngine
 import zavorateam.yabslushal.domain.model.DomainFilter
 import zavorateam.yabslushal.domain.model.DomainSong
 import zavorateam.yabslushal.domain.model.DomainSongListType
@@ -28,6 +29,25 @@ class SongRepository(
 
 	suspend fun getRandomSongsList(count: Int): List<DomainSong> {
 		return songDao.getRandomSongsList(count).map { it.toDomainModel() }
+	}
+
+	/**
+	 * Bounded candidate pool for the Mix It Up engine.
+	 *
+	 * @param count pool size, the engine caps it at [MixItUpEngine.poolSize]
+	 * @param downloadedIds when not null, only these locally stored songs are considered
+	 */
+	suspend fun getMixCandidatePool(
+		count: Int,
+		downloadedIds: List<String>? = null
+	): List<DomainSong> {
+		val entities = if (downloadedIds == null) {
+			songDao.getMixCandidatePool(count)
+		} else {
+			if (downloadedIds.isEmpty()) return emptyList()
+			songDao.getMixCandidatePoolDownloaded(count, downloadedIds)
+		}
+		return entities.map { it.toDomainModel() }
 	}
 
 	private suspend fun getLocalData(

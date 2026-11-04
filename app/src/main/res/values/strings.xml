@@ -560,4 +560,14 @@
 	<string name="info_incorrect_credentials">Incorrect credentials. Please double-check and try again.</string>
 	<string name="title_integrations">Integrations</string>
 	<string name="action_edit_api_key">Edit %1$s API key</string>
+
+	<string name="title_mix_it_up">Mix It Up</string>
+	<string name="subtitle_mix_it_up">Собрать микс из вашей библиотеки</string>
+	<string name="title_mix_it_up_settings">Mix It Up</string>
+	<string name="subtitle_mix_it_up_settings">Локальный подбор треков вместо случайного</string>
+	<string name="option_mix_it_up_enabled">Включить Mix It Up</string>
+	<string name="subtitle_mix_it_up_enabled">Вместо одного случайного трека очередь пополняется подборкой похожих песен</string>
+	<string name="option_mix_it_up_variability">Разброс</string>
+	<string name="option_mix_it_up_switch_rate">Смена направления</string>
+
 </resources>

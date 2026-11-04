@@ -74,7 +74,7 @@ class YandexMusicLyricsSourceTest {
 		assertEquals(lrcBody, result)
 		assertEquals("OAuth y0_AgAAA", authHeader)
 		assertEquals("LRC", formatParam)
-		assertTrue(requests.any { it.contains("/lyrics?format=LRC") })
+		assertTrue(requests.any { it.contains("/lyrics?") && it.contains("sign=") })
 		assertTrue(requests.any { it.contains("s3-private") })
 	}
 
