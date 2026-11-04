@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Splash colours, matching the launcher icon gradient so the launch is seamless. -->
+	<color name="splash_background">#FF1C1430</color>
+	<color name="splash_icon_background">#FF4F46E5</color>
+</resources>

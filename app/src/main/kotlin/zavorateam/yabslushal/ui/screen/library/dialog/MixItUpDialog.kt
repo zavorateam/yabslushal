@@ -19,6 +19,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import zavorateam.yabslushal.R
 import zavorateam.yabslushal.domain.mix.MixDuration
 import zavorateam.yabslushal.domain.mix.MixTempo
+import zavorateam.yabslushal.ui.icons.Icons
+import zavorateam.yabslushal.ui.icons.outlined.Refresh
 import zavorateam.yabslushal.ui.screen.library.viewmodel.MixItUpUiState
 
 /**
@@ -61,7 +65,7 @@ fun MixItUpDialog(
 					.fillMaxWidth()
 					.heightIn(max = 460.dp)
 					.verticalScroll(rememberScrollState()),
-				verticalArrangement = Arrangement.spacedBy(6.dp)
+				verticalArrangement = Arrangement.spacedBy(3.dp)
 			) {
 				Text(
 					stringResource(R.string.subtitle_mix_it_up_dialog),
@@ -72,8 +76,8 @@ fun MixItUpDialog(
 				if (state.genres.isNotEmpty()) {
 					SectionTitle(stringResource(R.string.option_mix_it_up_genres))
 					FlowRow(
-						horizontalArrangement = Arrangement.spacedBy(6.dp),
-						verticalArrangement = Arrangement.spacedBy(4.dp)
+						horizontalArrangement = Arrangement.spacedBy(4.dp),
+						verticalArrangement = Arrangement.spacedBy(2.dp)
 					) {
 						state.genres.forEach { genre ->
 							FilterChip(
@@ -88,8 +92,8 @@ fun MixItUpDialog(
 				if (state.moods.isNotEmpty()) {
 					SectionTitle(stringResource(R.string.option_mix_it_up_moods))
 					FlowRow(
-						horizontalArrangement = Arrangement.spacedBy(6.dp),
-						verticalArrangement = Arrangement.spacedBy(4.dp)
+						horizontalArrangement = Arrangement.spacedBy(4.dp),
+						verticalArrangement = Arrangement.spacedBy(2.dp)
 					) {
 						state.moods.forEach { mood ->
 							FilterChip(
@@ -135,24 +139,33 @@ fun MixItUpDialog(
 				}
 			}
 		},
-		confirmButton = {
-			Button(onClick = onStart) {
-				Text(stringResource(R.string.action_start_mix))
-			}
-		},
+		// The real actions are rendered together in dismissButton, so AlertDialog gets no
+		// separate confirm button: that keeps one row that is guaranteed to fit.
+		confirmButton = {},
 		// Cancel and start are the two real actions. "I don't care" clears every filter and sits
 		// to their left as a separate, equally reachable shortcut.
+		// Three actions do not fit on one line at this dialog width: the long "Мне всё равно"
+		// label alone takes a quarter of the screen. It is therefore rendered as a single
+		// icon button on the far left, whose meaning is spelled out below the dialog actions.
 		dismissButton = {
 			Row(
 				modifier = Modifier.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween,
 				verticalAlignment = Alignment.CenterVertically
 			) {
-				TextButton(onClick = onClear) {
-					Text(stringResource(R.string.option_mix_it_up_dont_care))
+				IconButton(onClick = onClear) {
+					Icon(
+						Icons.Outlined.Refresh,
+						contentDescription = stringResource(R.string.option_mix_it_up_dont_care)
+					)
 				}
-				TextButton(onClick = onDismiss) {
-					Text(stringResource(R.string.action_cancel))
+				Row(verticalAlignment = Alignment.CenterVertically) {
+					TextButton(onClick = onDismiss) {
+						Text(stringResource(R.string.action_cancel))
+					}
+					Button(onClick = onStart) {
+						Text(stringResource(R.string.action_start_mix))
+					}
 				}
 			}
 		}
@@ -170,11 +183,11 @@ private fun <T> ChoiceGrid(
 	label: @Composable (T) -> String,
 	onSelect: (T) -> Unit
 ) {
-	Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+	Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
 		options.chunked(2).forEach { row ->
 			Row(
 				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.spacedBy(6.dp)
+				horizontalArrangement = Arrangement.spacedBy(4.dp)
 			) {
 				row.forEach { option ->
 					FilterChip(
@@ -203,7 +216,7 @@ private fun SectionTitle(text: String) {
 	Text(
 		text,
 		style = MaterialTheme.typography.titleSmall,
-		modifier = Modifier.padding(top = 2.dp)
+		modifier = Modifier.padding(top = 1.dp)
 	)
 }
 

@@ -15,6 +15,7 @@ import zavorateam.yabslushal.database.paging.createPagedFlow
 import zavorateam.yabslushal.database.query.toSqlQuery
 import zavorateam.yabslushal.domain.manager.session.SyncManager
 import zavorateam.yabslushal.domain.mix.MixItUpEngine
+import zavorateam.yabslushal.domain.mix.MixTempo
 import zavorateam.yabslushal.domain.model.DomainFilter
 import zavorateam.yabslushal.domain.model.DomainSong
 import zavorateam.yabslushal.domain.model.DomainSongListType
@@ -64,7 +65,7 @@ class SongRepository(
 	 * Navidrome reports `bpm = 0` for every track that has no tempo tag, and most libraries have
 	 * none, so the tempo filter cannot match anything and must not be offered as if it could.
 	 */
-	suspend fun hasTempoTags(): Boolean = songDao.hasTempoTags()
+	suspend fun hasTempoTags(): Boolean = MixTempo.hasData(songDao.getBpmValues())
 
 	/**
 	 * Bounded candidate pool for the Mix It Up engine.

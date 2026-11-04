@@ -51,6 +51,17 @@ enum class MixTempo(val minBpm: Int?, val maxBpm: Int?) {
 	Medium(90, 119),
 	Fast(120, 300);
 
+	companion object {
+		/**
+		 * Decides whether the tempo filter may be shown at all.
+		 *
+		 * A tempo filter is only useful when the library actually carries tempo values. Servers
+		 * report `bpm = 0` for tracks without a tempo tag, so the presence of the field means
+		 * nothing; at least one positive value is required.
+		 */
+		fun hasData(bpmValues: Collection<Int?>): Boolean = bpmValues.any { it != null && it > 0 }
+	}
+
 	/** True when [bpm] is inside this bucket. [Any] always matches, even without a value. */
 	fun matches(bpm: Int?): Boolean {
 		if (this == Any) return true
