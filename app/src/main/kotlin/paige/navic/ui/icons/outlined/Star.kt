@@ -48,7 +48,6 @@ val Icons.Outlined.Star: ImageVector
 				lineTo(480f, 284f)
 				lineTo(422f, 420f)
 				lineTo(276f, 433f)
-				lineTo(387f, 430f)
 				close()
 			}
 		}.build()
