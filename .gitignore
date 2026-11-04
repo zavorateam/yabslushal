@@ -11,4 +11,7 @@
 /captures
 /local.properties
 
+# local android debug signing material
+/debug.keystore
+
 .DS_Store

@@ -19,8 +19,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.koinInject
 import paige.navic.R
 import paige.navic.ui.icons.Icons
-import paige.navic.ui.icons.filled.Star
-import paige.navic.ui.icons.outlined.Star
+import paige.navic.ui.icons.filled.Heart
+import paige.navic.ui.icons.outlined.Heart
 import paige.navic.playback.MediaPlayer
 
 @Composable
@@ -39,7 +39,7 @@ fun NowPlayingStarButton(
 		enabled = playerState.currentSong != null
 	) {
 		Icon(
-			if (songIsStarred) Icons.Filled.Star else Icons.Outlined.Star,
+			if (songIsStarred) Icons.Filled.Heart else Icons.Outlined.Heart,
 			contentDescription = stringResource(R.string.action_star)
 		)
 	}

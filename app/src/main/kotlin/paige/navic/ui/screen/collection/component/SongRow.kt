@@ -61,7 +61,7 @@ import paige.navic.ui.component.common.SwipeToDismissBox
 import paige.navic.ui.component.common.Waveform
 import paige.navic.ui.component.dialog.QueueDuplicateDialog
 import paige.navic.ui.icons.Icons
-import paige.navic.ui.icons.filled.Star
+import paige.navic.ui.icons.filled.Heart
 import paige.navic.ui.icons.outlined.Check
 import paige.navic.ui.icons.outlined.DownloadOff
 import paige.navic.ui.icons.outlined.Lock
@@ -217,7 +217,7 @@ fun CollectionDetailScreenSongRow(
 				Row(verticalAlignment = Alignment.CenterVertically) {
 					if (isStarred) {
 						Icon(
-							Icons.Filled.Star,
+							Icons.Filled.Heart,
 							null,
 							modifier = Modifier.size(16.dp)
 						)

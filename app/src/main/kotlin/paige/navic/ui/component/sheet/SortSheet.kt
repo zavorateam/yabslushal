@@ -40,7 +40,7 @@ import paige.navic.domain.model.settings.ListViewMode
 import paige.navic.ui.icons.Icons
 import paige.navic.ui.icons.outlined.Download
 import paige.navic.ui.icons.outlined.ListArrow
-import paige.navic.ui.icons.outlined.Star
+import paige.navic.ui.icons.outlined.Heart
 import paige.navic.ui.component.common.SegmentedListItem
 import paige.navic.ui.component.common.SegmentedListItemDefaults
 import paige.navic.ui.theme.defaultFont
@@ -138,7 +138,7 @@ fun <T> SortSheet(
 							leadingIcon = {
 								Icon(
 									imageVector = when (filter) {
-										DomainFilter.Starred -> Icons.Outlined.Star
+										DomainFilter.Starred -> Icons.Outlined.Heart
 										DomainFilter.Downloaded -> Icons.Outlined.Download
 									},
 									contentDescription = null

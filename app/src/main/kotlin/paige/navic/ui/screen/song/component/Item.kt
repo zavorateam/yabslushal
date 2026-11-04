@@ -48,7 +48,7 @@ import paige.navic.ui.component.common.SmallRatingRow
 import paige.navic.ui.component.common.SwipeToDismissBox
 import paige.navic.ui.component.sheet.SongSheet
 import paige.navic.ui.icons.Icons
-import paige.navic.ui.icons.filled.Star
+import paige.navic.ui.icons.filled.Heart
 import paige.navic.ui.icons.outlined.Check
 import paige.navic.ui.icons.outlined.DownloadOff
 import paige.navic.ui.icons.outlined.Queue
@@ -162,7 +162,7 @@ fun SongListScreenItem(
 				trailingContent = {
 					if (starred) {
 						Icon(
-							Icons.Filled.Star,
+							Icons.Filled.Heart,
 							null,
 							modifier = Modifier.size(16.dp)
 						)

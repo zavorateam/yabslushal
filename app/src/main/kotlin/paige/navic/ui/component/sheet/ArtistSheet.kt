@@ -48,7 +48,7 @@ import paige.navic.ui.component.dialog.rememberDownloadDeletionHandler
 import paige.navic.ui.icons.Icons
 import paige.navic.ui.icons.brand.LastFM
 import paige.navic.ui.icons.brand.MusicBrainz
-import paige.navic.ui.icons.filled.Star
+import paige.navic.ui.icons.filled.Heart
 import paige.navic.ui.icons.outlined.Close
 import paige.navic.ui.icons.outlined.Delete
 import paige.navic.ui.icons.outlined.Download
@@ -56,7 +56,7 @@ import paige.navic.ui.icons.outlined.DownloadOff
 import paige.navic.ui.icons.outlined.PlaylistAdd
 import paige.navic.ui.icons.outlined.Queue
 import paige.navic.ui.icons.outlined.QueuePlayNext
-import paige.navic.ui.icons.outlined.Star
+import paige.navic.ui.icons.outlined.Heart
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -188,7 +188,7 @@ fun ArtistSheet(
 						Text(stringResource(if (starred) R.string.action_remove_star else R.string.action_star))
 					},
 					leadingContent = {
-						Icon(if (starred) Icons.Filled.Star else Icons.Outlined.Star, null)
+						Icon(if (starred) Icons.Filled.Heart else Icons.Outlined.Heart, null)
 					},
 					onClick = {
 						onSetStarred(!starred)

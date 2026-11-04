@@ -47,7 +47,7 @@ import paige.navic.playback.MediaPlayer
 import paige.navic.ui.component.dialog.QueueDuplicateDialog
 import paige.navic.ui.component.sheet.SongSheet
 import paige.navic.ui.icons.Icons
-import paige.navic.ui.icons.filled.Star
+import paige.navic.ui.icons.filled.Heart
 import paige.navic.ui.icons.outlined.Check
 import paige.navic.ui.icons.outlined.DownloadOff
 import paige.navic.ui.icons.outlined.Lock
@@ -142,7 +142,7 @@ fun SongRow(
 			Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.height(83.dp)) {
 				if (starredState) {
 					Icon(
-						Icons.Filled.Star,
+						Icons.Filled.Heart,
 						null,
 						modifier = Modifier.size(16.dp)
 					)

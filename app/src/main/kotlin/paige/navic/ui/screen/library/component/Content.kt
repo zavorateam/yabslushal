@@ -37,10 +37,10 @@ import paige.navic.domain.model.DomainGenre
 import paige.navic.domain.model.DomainPlaylist
 import paige.navic.ui.component.layout.horizontalSection
 import paige.navic.ui.icons.Icons
+import paige.navic.ui.icons.outlined.Heart
 import paige.navic.ui.icons.outlined.History
 import paige.navic.ui.icons.outlined.LibraryAdd
 import paige.navic.ui.icons.outlined.Shuffle
-import paige.navic.ui.icons.outlined.Star
 import paige.navic.ui.navigation.Screen
 import paige.navic.ui.screen.album.component.AlbumListScreenGridItem
 import paige.navic.ui.screen.artist.ArtistListScreenGridItem
@@ -115,7 +115,7 @@ fun LibraryScreenContent(
 			start = false
 		)
 		libraryScreenOverviewButton(
-			icon = Icons.Outlined.Star,
+			icon = Icons.Outlined.Heart,
 			label = R.string.option_sort_starred,
 			destination = Screen.Starred(),
 			start = true

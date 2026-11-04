@@ -53,7 +53,7 @@ import paige.navic.ui.component.common.RatingRow
 import paige.navic.ui.component.dialog.DeleteDownloadTarget
 import paige.navic.ui.component.dialog.rememberDownloadDeletionHandler
 import paige.navic.ui.icons.Icons
-import paige.navic.ui.icons.filled.Star
+import paige.navic.ui.icons.filled.Heart
 import paige.navic.ui.icons.outlined.Album
 import paige.navic.ui.icons.outlined.Artist
 import paige.navic.ui.icons.outlined.Bedtime
@@ -68,7 +68,7 @@ import paige.navic.ui.icons.outlined.Queue
 import paige.navic.ui.icons.outlined.QueuePlayNext
 import paige.navic.ui.icons.outlined.Share
 import paige.navic.ui.icons.outlined.Speed
-import paige.navic.ui.icons.outlined.Star
+import paige.navic.ui.icons.outlined.Heart
 import paige.navic.ui.navigation.Screen
 import paige.navic.ui.theme.NavicTheme
 import paige.navic.ui.theme.positive
@@ -206,7 +206,7 @@ fun SongSheet(
 							Text(stringResource(if (starred) R.string.action_remove_star else R.string.action_star))
 						},
 						leadingContent = {
-							Icon(if (starred) Icons.Filled.Star else Icons.Outlined.Star, null)
+							Icon(if (starred) Icons.Filled.Heart else Icons.Outlined.Heart, null)
 						},
 						onClick = {
 							onSetStarred(!starred)

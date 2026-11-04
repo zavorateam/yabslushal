@@ -57,7 +57,7 @@ import paige.navic.ui.component.dialog.LinkConfirmationDialog
 import paige.navic.ui.icons.Icons
 import paige.navic.ui.icons.brand.LastFM
 import paige.navic.ui.icons.brand.MusicBrainz
-import paige.navic.ui.icons.filled.Star
+import paige.navic.ui.icons.filled.Heart
 import paige.navic.ui.icons.outlined.Artist
 import paige.navic.ui.icons.outlined.Close
 import paige.navic.ui.icons.outlined.Delete
@@ -68,7 +68,7 @@ import paige.navic.ui.icons.outlined.PlaylistRemove
 import paige.navic.ui.icons.outlined.Queue
 import paige.navic.ui.icons.outlined.QueuePlayNext
 import paige.navic.ui.icons.outlined.Share
-import paige.navic.ui.icons.outlined.Star
+import paige.navic.ui.icons.outlined.Heart
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -252,7 +252,7 @@ fun CollectionSheet(
 						Text(stringResource(if (starred) R.string.action_remove_star else R.string.action_star))
 					},
 					leadingContent = {
-						Icon(if (starred) Icons.Filled.Star else Icons.Outlined.Star, null)
+						Icon(if (starred) Icons.Filled.Heart else Icons.Outlined.Heart, null)
 					},
 					onClick = {
 						onSetStarred(!starred)
