@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -79,7 +79,7 @@ import zavorateam.yabslushal.ui.screen.collection.component.CollectionDetailScre
 import zavorateam.yabslushal.ui.screen.collection.component.CollectionDetailScreenTopBar
 import zavorateam.yabslushal.ui.screen.collection.viewmodel.CollectionDetailViewModel
 import zavorateam.yabslushal.ui.screen.playlist.dialog.PlaylistUpdateDialog
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.ui.util.rememberColorSchemeFromCoverArt
 import zavorateam.yabslushal.ui.util.withoutTop
 
@@ -139,7 +139,7 @@ fun CollectionDetailScreen(
 		null
 	}
 
-	NavicTheme(colorScheme) {
+	YabslushalTheme(colorScheme) {
 		Scaffold(
 			topBar = {
 				CollectionDetailScreenTopBar(

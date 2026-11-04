@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -70,7 +70,7 @@ fun buildOkHttpConfig(
 
 		dnsResolver?.let {
 			dns(it)
-			if (it is NavicDnsResolver) {
+			if (it is YabslushalDnsResolver) {
 				this.addInterceptor(it.requestInterceptor)
 			}
 		}
@@ -148,7 +148,7 @@ fun extractProxyConfigFromUrl(url: String): ProxyConfig? {
 
 fun createHttpClientWithPreferences(
 	preferenceManager: PreferenceManager,
-	dnsResolver: NavicDnsResolver
+	dnsResolver: YabslushalDnsResolver
 ): HttpClient {
 	return createHttpClient(
 		preferenceManager.dangerousSslNoopEnabled,

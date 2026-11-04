@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -34,7 +34,7 @@ import zavorateam.yabslushal.ui.icons.Icons
 import zavorateam.yabslushal.ui.icons.outlined.MoreHoriz
 import zavorateam.yabslushal.ui.navigation.Screen
 import zavorateam.yabslushal.ui.screen.playlist.dialog.PlaylistUpdateDialog
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.ui.util.rememberColorSchemeFromCoverArt
 
 @Composable
@@ -67,7 +67,7 @@ fun NowPlayingMoreButton(
 	}
 
 	if (expanded && song != null) {
-		NavicTheme(colorScheme) {
+		YabslushalTheme(colorScheme) {
 			SongSheet(
 				onDismissRequest = { expanded = false },
 				song = song,
@@ -109,7 +109,7 @@ fun NowPlayingMoreButton(
 	}
 
 	if (sleepTimerSheetShown) {
-		NavicTheme(colorScheme) {
+		YabslushalTheme(colorScheme) {
 			SleepTimerSheet(
 				onDismissRequest = { sleepTimerSheetShown = false }
 			)
@@ -117,7 +117,7 @@ fun NowPlayingMoreButton(
 	}
 
 	if (playlistDialogShown && song != null) {
-		NavicTheme(colorScheme) {
+		YabslushalTheme(colorScheme) {
 			PlaylistUpdateDialog(
 				songIds = persistentListOf(song.id),
 				onDismissRequest = { playlistDialogShown = false }
@@ -125,7 +125,7 @@ fun NowPlayingMoreButton(
 		}
 	}
 
-	NavicTheme(colorScheme) {
+	YabslushalTheme(colorScheme) {
 		ShareDialog(
 			id = shareId,
 			onDismissRequest = { shareId = null }

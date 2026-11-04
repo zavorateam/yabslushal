@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -48,7 +48,7 @@ class LrcLibSource(
 
 	companion object {
 		const val DEFAULT_BASE_URL = "https://lrclib.net"
-		const val DEFAULT_USER_AGENT = "Navic/1.0 (https://github.com/zavorateam/yabslushal)"
+		const val DEFAULT_USER_AGENT = "Yabslushal/1.0 (https://github.com/zavorateam/yabslushal)"
 		const val TAG = "LrcLibSource"
 
 		/** /api/get results further than this from the local duration are treated as a mismatch. */

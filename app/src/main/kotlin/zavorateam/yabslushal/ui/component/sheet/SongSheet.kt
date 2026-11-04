@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -70,7 +70,7 @@ import zavorateam.yabslushal.ui.icons.outlined.Share
 import zavorateam.yabslushal.ui.icons.outlined.Speed
 import zavorateam.yabslushal.ui.icons.outlined.Heart
 import zavorateam.yabslushal.ui.navigation.Screen
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.ui.theme.positive
 import zavorateam.yabslushal.ui.util.InlineExplicitIcon
 import zavorateam.yabslushal.ui.util.buildSongInfoString
@@ -118,7 +118,7 @@ fun SongSheet(
 
 	val backStack = LocalNavStack.current
 
-	NavicTheme(colorScheme) {
+	YabslushalTheme(colorScheme) {
 		val colors = ListItemDefaults.colors(
 			containerColor = Color.Transparent,
 			trailingIconColor = MaterialTheme.colorScheme.onSurface,

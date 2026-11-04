@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige, Nightdavisao
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -131,7 +131,7 @@ object PlaybackUtils {
 		}
 
 		return ClientInfo(
-			name = "Navic",
+			name = "Yabslushal",
 			platform = "Android",
 			maxAudioBitrate = bitrateKbps * 1000,
 			maxTranscodingAudioBitrate = bitrateKbps * 1000,

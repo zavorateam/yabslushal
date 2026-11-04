@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -81,7 +81,7 @@ import zavorateam.yabslushal.domain.model.DomainSong
 import zavorateam.yabslushal.ui.component.sheet.ColorPickerSheet
 import zavorateam.yabslushal.ui.component.sheet.ModalBottomSheet
 import zavorateam.yabslushal.ui.icons.Icons
-import zavorateam.yabslushal.ui.icons.brand.Navic
+import zavorateam.yabslushal.ui.icons.brand.Yabslushal
 import zavorateam.yabslushal.ui.icons.outlined.Check
 import zavorateam.yabslushal.ui.icons.outlined.Picker
 import zavorateam.yabslushal.ui.icons.outlined.Share
@@ -235,7 +235,7 @@ fun LyricsShareSheet(
 						modifier = Modifier.fillMaxWidth()
 					) {
 						Icon(
-							imageVector = Icons.Brand.Navic,
+							imageVector = Icons.Brand.Yabslushal,
 							contentDescription = null,
 							modifier = Modifier.size(24.dp)
 						)

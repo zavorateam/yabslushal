@@ -4,52 +4,37 @@
 	android:height="108dp"
 	android:viewportWidth="108"
 	android:viewportHeight="108">
-	<!-- Left outer soundwave bar -->
+	<!-- Audio levels: mirrored bars that read as a waveform -->
 	<path
 		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="5"
+		android:strokeWidth="5.5"
 		android:strokeLineCap="round"
-		android:pathData="M24,44 L24,64" />
-	<!-- Right outer soundwave bar -->
+		android:pathData="M30.5,52 L30.5,60" />
 	<path
 		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="5"
+		android:strokeWidth="5.5"
 		android:strokeLineCap="round"
-		android:pathData="M84,44 L84,64" />
-	<!-- Left inner wave bar -->
+		android:pathData="M77.5,52 L77.5,60" />
 	<path
 		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="5"
+		android:strokeWidth="5.5"
 		android:strokeLineCap="round"
-		android:pathData="M41,24 L41,38" />
-	<!-- Right inner wave bar -->
+		android:pathData="M39.0,46 L39.0,66" />
 	<path
 		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="5"
+		android:strokeWidth="5.5"
 		android:strokeLineCap="round"
-		android:pathData="M67,24 L67,38" />
-	<!-- Main Y emblem branches -->
+		android:pathData="M69.0,46 L69.0,66" />
+	<!-- The Y mark: two arms converging into a single stem -->
 	<path
 		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="6"
+		android:strokeWidth="7.0"
 		android:strokeLineCap="round"
-		android:pathData="M34,32 L54,54" />
+		android:strokeLineJoin="round"
+		android:pathData="M46,36 L54,46 L62,36" />
 	<path
 		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="6"
+		android:strokeWidth="7.0"
 		android:strokeLineCap="round"
-		android:pathData="M74,32 L54,54" />
-	<!-- Stem of Y -->
-	<path
-		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="6"
-		android:strokeLineCap="round"
-		android:pathData="M54,54 L54,78" />
-	<!-- Base soundwave accent bar -->
-	<path
-		android:strokeColor="#FFFFFFFF"
-		android:strokeWidth="5"
-		android:strokeLineCap="round"
-		android:pathData="M46,84 L62,84" />
+		android:pathData="M54,46 L54,70" />
 </vector>
-

@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -25,7 +25,7 @@ import zavorateam.yabslushal.util.TTLLruCache
 import java.net.InetAddress
 import java.util.concurrent.TimeUnit
 
-class NavicDnsResolver(
+class YabslushalDnsResolver(
 	val preferenceManager: PreferenceManager,
 	val settings: Settings,
 	val connectivityManager: ConnectivityManager
@@ -91,7 +91,7 @@ class NavicDnsResolver(
 			val lookupResult = runBlocking {
 				withContext(Dispatchers.IO) {
 					try {
-						this@NavicDnsResolver.lookup(host)
+						this@YabslushalDnsResolver.lookup(host)
 					} catch (_: Exception) {
 						emptyList()
 					}

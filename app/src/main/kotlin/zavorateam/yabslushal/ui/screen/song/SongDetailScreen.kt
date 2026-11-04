@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -32,7 +32,7 @@ import zavorateam.yabslushal.ui.component.common.SegmentedListItemDefaults
 import zavorateam.yabslushal.ui.component.layout.NestedTopBar
 import zavorateam.yabslushal.ui.screen.song.component.SongDetailScreenInfoRow
 import zavorateam.yabslushal.ui.screen.song.viewmodel.SongDetailViewModel
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.ui.util.rememberColorSchemeFromCoverArt
 
 @Composable
@@ -52,7 +52,7 @@ fun SongDetailScreen(
 	val activeCoverArtId = if (initialCoverArtId.isNullOrEmpty()) song?.coverArtId else initialCoverArtId
 	val colorScheme = rememberColorSchemeFromCoverArt(activeCoverArtId)
 
-	NavicTheme(colorScheme) {
+	YabslushalTheme(colorScheme) {
 		Scaffold(
 			topBar = { NestedTopBar({ Text(song?.title.orEmpty()) }) }
 		) { contentPadding ->

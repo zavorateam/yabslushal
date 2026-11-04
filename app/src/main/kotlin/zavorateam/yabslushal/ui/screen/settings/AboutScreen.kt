@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -42,7 +42,7 @@ import zavorateam.yabslushal.ui.screen.settings.component.SettingsGroupDefaults
 import zavorateam.yabslushal.ui.screen.settings.component.SettingsNavItem
 import zavorateam.yabslushal.ui.screen.settings.component.SettingsToggleItem
 
-const val CODEBERG_BASE_URL = "https://codeberg.org/paige/Navic/"
+const val CODEBERG_BASE_URL = "https://github.com/zavorateam/yabslushal/"
 
 @Composable
 fun SettingsAboutScreen() {
@@ -141,7 +141,7 @@ fun SettingsAboutScreen() {
 
 			SettingsGroup {
 				SettingsNavItem(
-					onClick = { linkToOpen = "https://codeberg.org/paige/Navic" },
+					onClick = { linkToOpen = "https://github.com/zavorateam/yabslushal" },
 					shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = 3),
 					content = { Text(stringResource(R.string.title_codeberg)) }
 				)

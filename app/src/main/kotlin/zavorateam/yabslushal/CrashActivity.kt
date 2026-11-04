@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -78,7 +78,7 @@ class CrashActivity : ComponentActivity() {
 								text = "Something went wrong",
 								style = MaterialTheme.typography.headlineMedium
 							)
-							Text("Navic has encountered an unknown error and needs to close.")
+							Text("Yabslushal has encountered an unknown error and needs to close.")
 							Spacer(modifier = Modifier.height(16.dp))
 							SelectionContainer(
 								Modifier

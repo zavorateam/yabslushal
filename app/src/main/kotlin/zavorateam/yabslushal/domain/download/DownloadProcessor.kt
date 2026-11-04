@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -37,7 +37,7 @@ import zavorateam.yabslushal.domain.manager.session.SessionManager
 import zavorateam.yabslushal.domain.model.DomainSong
 import zavorateam.yabslushal.domain.repository.LyricsRepository
 import zavorateam.yabslushal.util.Logger
-import zavorateam.yabslushal.util.network.NavicDnsResolver
+import zavorateam.yabslushal.util.network.YabslushalDnsResolver
 import zavorateam.yabslushal.util.network.createHttpClientWithPreferences
 
 class DownloadCancelledException : Exception("Download was cancelled")
@@ -51,7 +51,7 @@ class DownloadProcessor(
 	private val lyricDao: LyricDao,
 	private val sessionManager: SessionManager,
 	private val preferenceManager: PreferenceManager,
-	dnsResolver: NavicDnsResolver
+	dnsResolver: YabslushalDnsResolver
 ) {
 	private val client = createHttpClientWithPreferences(preferenceManager, dnsResolver).apply {
 		config {

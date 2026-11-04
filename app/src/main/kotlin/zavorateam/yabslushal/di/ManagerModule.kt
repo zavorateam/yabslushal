@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -37,8 +37,8 @@ import zavorateam.yabslushal.domain.manager.ui.SnackBarManager
 import zavorateam.yabslushal.domain.sync.SyncActionProcessor
 import zavorateam.yabslushal.domain.sync.SyncCoordinator
 import zavorateam.yabslushal.playback.exoplayer.ExoStateHolder
-import zavorateam.yabslushal.playback.exoplayer.impl.cache.NavicDataSource.NavicDataSourceFactory
-import zavorateam.yabslushal.util.network.NavicDnsResolver
+import zavorateam.yabslushal.playback.exoplayer.impl.cache.YabslushalDataSource.YabslushalDataSourceFactory
+import zavorateam.yabslushal.util.network.YabslushalDnsResolver
 import zavorateam.yabslushal.util.network.createOkHttpClient
 import zavorateam.yabslushal.util.network.getProxyUrlOrNull
 
@@ -70,7 +70,7 @@ val managerModule = module {
 	}
 	single<() -> DataSource.Factory> {
 		val preferenceManager: PreferenceManager = get()
-		val dnsResolver = get<NavicDnsResolver>()
+		val dnsResolver = get<YabslushalDnsResolver>()
 
 		@OptIn(UnstableApi::class)
 		val provider: () -> DataSource.Factory = {
@@ -92,7 +92,7 @@ val managerModule = module {
 		provider
 	}
 	single {
-		NavicDataSourceFactory(
+		YabslushalDataSourceFactory(
 			downloadManager = get(),
 			sessionManager = get(),
 			streamCacheManager = get(),

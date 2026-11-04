@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -82,7 +82,7 @@ import zavorateam.yabslushal.domain.model.settings.ExplicitContentPlayback
 import zavorateam.yabslushal.playback.MediaPlayer
 import zavorateam.yabslushal.ui.component.layout.SideBar
 import zavorateam.yabslushal.ui.component.sheet.ChangelogSheet
-import zavorateam.yabslushal.ui.component.snackbar.NavicSnackBar
+import zavorateam.yabslushal.ui.component.snackbar.YabslushalSnackBar
 import zavorateam.yabslushal.ui.component.snackbar.SwipeableSnackBarHost
 import zavorateam.yabslushal.ui.navigation.BottomSheetSceneStrategy
 import zavorateam.yabslushal.ui.navigation.NowPlayingSceneStrategy
@@ -129,7 +129,7 @@ import zavorateam.yabslushal.ui.screen.song.SongDetailSheet
 import zavorateam.yabslushal.ui.screen.song.SongListScreen
 import zavorateam.yabslushal.ui.screen.starred.StarredScreen
 import zavorateam.yabslushal.ui.screen.stats.StatisticsScreen
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.ui.util.Material3Transitions
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -215,7 +215,7 @@ fun App() {
 			LocalBottomBarScrollManager provides scrollManager,
 			LocalSizeClass provides sizeClass
 		) {
-			NavicTheme {
+			YabslushalTheme {
 				Row(modifier = Modifier.fillMaxSize()) {
 					if (sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 						&& Screen.Login !in backStack
@@ -227,7 +227,7 @@ fun App() {
 						modifier = Modifier.nestedScroll(scrollManager.connection),
 						snackbarHost = {
 							SwipeableSnackBarHost(hostState = snackBarState) { snackBarData, offset ->
-								NavicSnackBar(
+								YabslushalSnackBar(
 									snackBarData = snackBarData,
 									modifier = Modifier.offset(x = offset)
 								)

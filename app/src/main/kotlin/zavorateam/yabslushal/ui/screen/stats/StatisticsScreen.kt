@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -69,7 +69,7 @@ import zavorateam.yabslushal.ui.navigation.Screen
 import zavorateam.yabslushal.ui.screen.stats.component.StatSummaryCard
 import zavorateam.yabslushal.ui.screen.stats.component.TopArtistItem
 import zavorateam.yabslushal.ui.screen.stats.viewmodel.StatisticsViewModel
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.util.toSummaryString
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -86,7 +86,7 @@ fun StatisticsScreen(
 
 	var selectedArtist by remember { mutableStateOf<DomainArtist?>(null) }
 
-	NavicTheme {
+	YabslushalTheme {
 		Scaffold(
 			topBar = {
 				if (!nested) {

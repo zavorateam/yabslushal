@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -13,13 +13,13 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import zavorateam.yabslushal.ui.icons.Icons
 
-val Icons.Brand.Navic: ImageVector
+val Icons.Brand.Yabslushal: ImageVector
 	get() {
-		if (_Navic != null) {
-			return _Navic!!
+		if (_Yabslushal != null) {
+			return _Yabslushal!!
 		}
-		_Navic = ImageVector.Builder(
-			name = "Brand.Navic",
+		_Yabslushal = ImageVector.Builder(
+			name = "Brand.Yabslushal",
 			defaultWidth = 94.dp,
 			defaultHeight = 94.dp,
 			viewportWidth = 94f,
@@ -73,8 +73,8 @@ val Icons.Brand.Navic: ImageVector
 			}
 		}.build()
 
-		return _Navic!!
+		return _Yabslushal!!
 	}
 
 @Suppress("ObjectPropertyName")
-private var _Navic: ImageVector? = null
+private var _Yabslushal: ImageVector? = null

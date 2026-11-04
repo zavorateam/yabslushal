@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -53,9 +53,9 @@ import zavorateam.yabslushal.domain.model.settings.ReplayGainMode
 import zavorateam.yabslushal.domain.repository.PlayerStateRepository
 import zavorateam.yabslushal.domain.repository.SongRepository
 import zavorateam.yabslushal.playback.exoplayer.ExoStateHolder
-import zavorateam.yabslushal.playback.exoplayer.impl.cache.NavicDataSource
-import zavorateam.yabslushal.playback.exoplayer.impl.cache.NavicDataSource.Companion.buildCoverUri
-import zavorateam.yabslushal.playback.exoplayer.impl.cache.NavicDataSource.Companion.buildSongUri
+import zavorateam.yabslushal.playback.exoplayer.impl.cache.YabslushalDataSource
+import zavorateam.yabslushal.playback.exoplayer.impl.cache.YabslushalDataSource.Companion.buildCoverUri
+import zavorateam.yabslushal.playback.exoplayer.impl.cache.YabslushalDataSource.Companion.buildSongUri
 import zavorateam.yabslushal.ui.core.PlayerUiState
 import zavorateam.yabslushal.util.Logger
 import java.io.File
@@ -679,7 +679,7 @@ class MediaPlayer(
 					?.takeIf { it > 0L }
 			}.getOrNull()
 				?: streamCacheManager.getSongFileSize(song.id)
-				?: return NavicDataSource.getCurrentQuality(
+				?: return YabslushalDataSource.getCurrentQuality(
 					preferenceManager,
 					connectivityManager
 				).first.takeIf { it > 0 }?.times(1000)

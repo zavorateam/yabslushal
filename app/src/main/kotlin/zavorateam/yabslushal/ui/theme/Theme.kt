@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -24,7 +24,7 @@ import zavorateam.yabslushal.domain.model.settings.ThemeMode
 import zavorateam.yabslushal.util.PlatformSupport
 
 @Composable
-fun NavicTheme(
+fun YabslushalTheme(
 	colorScheme: ColorScheme? = null,
 	content: @Composable () -> Unit
 ) {

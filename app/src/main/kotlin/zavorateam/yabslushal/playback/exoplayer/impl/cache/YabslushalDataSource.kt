@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -31,7 +31,7 @@ import zavorateam.yabslushal.util.Logger
 import java.io.File
 
 @OptIn(UnstableApi::class)
-class NavicDataSource(
+class YabslushalDataSource(
 	private val downloadManager: DownloadManager,
 	private val sessionManager: SessionManager,
 	private val streamCacheManager: StreamCacheManager,
@@ -44,7 +44,7 @@ class NavicDataSource(
 	val ttlLruCache
 		get() = sessionManager.ttlLruCache
 
-	class NavicDataSourceFactory(
+	class YabslushalDataSourceFactory(
 		private val downloadManager: DownloadManager,
 		private val sessionManager: SessionManager,
 		private val streamCacheManager: StreamCacheManager,
@@ -53,7 +53,7 @@ class NavicDataSource(
 		private val upstreamFactoryProvider: () -> DataSource.Factory
 	) : DataSource.Factory {
 		override fun createDataSource(): DataSource {
-			return NavicDataSource(
+			return YabslushalDataSource(
 				downloadManager,
 				sessionManager,
 				streamCacheManager,
@@ -68,7 +68,7 @@ class NavicDataSource(
 		const val NAVIC_SCHEME = "navic"
 		const val NAVIC_SONG_HOST = "song"
 		const val NAVIC_COVER_HOST = "cover"
-		private const val TAG = "NavicDataSource"
+		private const val TAG = "YabslushalDataSource"
 
 		fun String.buildSongUri(): Uri {
 			return "$NAVIC_SCHEME://$NAVIC_SONG_HOST/$this".toUri()

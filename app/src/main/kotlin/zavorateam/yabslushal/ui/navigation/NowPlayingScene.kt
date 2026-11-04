@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -38,7 +38,7 @@ import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
 import zavorateam.yabslushal.di.LocalSheetState
 import zavorateam.yabslushal.ui.component.sheet.ModalBottomSheet
-import zavorateam.yabslushal.ui.theme.NavicTheme
+import zavorateam.yabslushal.ui.theme.YabslushalTheme
 import zavorateam.yabslushal.ui.util.rememberColorSchemeForCurrentSong
 import zavorateam.yabslushal.ui.util.rememberScreenCornerRadius
 
@@ -81,7 +81,7 @@ class NowPlayingScene<T : Any>(
 			}
 		}
 
-		NavicTheme(rememberColorSchemeForCurrentSong()) {
+		YabslushalTheme(rememberColorSchemeForCurrentSong()) {
 			ModalBottomSheet(
 				containerColor = if (isTransparent) {
 					Color.Transparent

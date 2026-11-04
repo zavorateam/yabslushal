@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -43,7 +43,7 @@ import zavorateam.yabslushal.ui.screen.song.viewmodel.SongDetailViewModel
 import zavorateam.yabslushal.ui.screen.song.viewmodel.SongListViewModel
 import zavorateam.yabslushal.ui.screen.stats.viewmodel.StatisticsViewModel
 import zavorateam.yabslushal.ui.viewmodel.RootViewModel
-import zavorateam.yabslushal.util.network.NavicDnsResolver
+import zavorateam.yabslushal.util.network.YabslushalDnsResolver
 
 val viewModelModule = module {
 	single<MediaPlayer> {
@@ -61,8 +61,8 @@ val viewModelModule = module {
 			connectivityManager = get()
 		)
 	}
-	single<NavicDnsResolver> {
-		NavicDnsResolver(
+	single<YabslushalDnsResolver> {
+		YabslushalDnsResolver(
 			preferenceManager = get(),
 			settings = get(),
 			connectivityManager = get()

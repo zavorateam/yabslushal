@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -21,7 +21,7 @@ import zavorateam.yabslushal.domain.manager.runtime.PreferenceManager
 import zavorateam.yabslushal.domain.manager.session.SessionManager
 import zavorateam.yabslushal.domain.model.settings.CoverArtHost
 import zavorateam.yabslushal.util.Logger
-import zavorateam.yabslushal.util.network.NavicDnsResolver
+import zavorateam.yabslushal.util.network.YabslushalDnsResolver
 import zavorateam.yabslushal.util.network.createHttpClient
 import kotlin.time.Duration.Companion.seconds
 
@@ -29,7 +29,7 @@ class CoverArtUploadManager(
 	private val sessionManager: SessionManager,
 	private val preferenceManager: PreferenceManager,
 	private val settings: Settings,
-	dnsResolver: NavicDnsResolver
+	dnsResolver: YabslushalDnsResolver
 ) {
 	private val client = createHttpClient(
 		trustAllCerts = preferenceManager.dangerousSslNoopEnabled,

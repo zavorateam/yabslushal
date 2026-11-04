@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -50,7 +50,7 @@ class YandexMusicLyricsSource(
 	override suspend fun fetchLyrics(song: DomainSong, token: String): String? {
 		if (token.isBlank()) return null
 
-		// The Yandex API addresses tracks by its own numeric ids. Navic works with whatever ids
+		// The Yandex API addresses tracks by its own numeric ids. Yabslushal works with whatever ids
 		// the Subsonic server assigns, so the id is only usable when it is numeric.
 		val trackId = song.id.takeIf { id -> id.isNotBlank() && id.all(Char::isDigit) } ?: return null
 

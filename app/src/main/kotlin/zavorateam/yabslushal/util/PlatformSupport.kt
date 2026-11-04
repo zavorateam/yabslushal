@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.annotation.ChecksSdkIntAtLeast
 
 object PlatformSupport {
-	// used by NavicTheme and ThemesScreen
+	// used by YabslushalTheme and ThemesScreen
 	@ChecksSdkIntAtLeast(Build.VERSION_CODES.S)
 	val SUPPORTS_DYNAMIC_THEME: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 	@ChecksSdkIntAtLeast(Build.VERSION_CODES.Q)

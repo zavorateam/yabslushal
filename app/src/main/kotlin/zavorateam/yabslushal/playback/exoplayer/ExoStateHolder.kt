@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -58,7 +58,7 @@ import org.koin.core.component.inject
 import zavorateam.yabslushal.domain.manager.runtime.PreferenceManager
 import zavorateam.yabslushal.domain.manager.runtime.StorageManager
 import zavorateam.yabslushal.domain.manager.session.SessionManager
-import zavorateam.yabslushal.playback.exoplayer.impl.cache.NavicDataSource
+import zavorateam.yabslushal.playback.exoplayer.impl.cache.YabslushalDataSource
 import zavorateam.yabslushal.playback.exoplayer.impl.listeners.ExoDiscordIntegrationImpl
 import zavorateam.yabslushal.playback.exoplayer.impl.playback.ExoAudioGainProcessor
 import zavorateam.yabslushal.playback.exoplayer.impl.util.ExoArtworkLoader
@@ -69,7 +69,7 @@ import kotlin.time.DurationUnit
 class ExoStateHolder : KoinComponent {
 	private val context: Context by inject()
 	private val preferenceManager: PreferenceManager by inject()
-	private val dataSource: NavicDataSource.NavicDataSourceFactory by inject()
+	private val dataSource: YabslushalDataSource.YabslushalDataSourceFactory by inject()
 	private val sessionManager: SessionManager by inject()
 	private val imageLoader: ImageLoader by inject()
 	private val storageManager: StorageManager by inject()

@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -31,7 +31,7 @@ import zavorateam.yabslushal.util.Logger
 import zavorateam.yabslushal.util.TTLLruCache
 import zavorateam.yabslushal.util.getEncryptedString
 import zavorateam.yabslushal.util.insertEncryptedString
-import zavorateam.yabslushal.util.network.NavicDnsResolver
+import zavorateam.yabslushal.util.network.YabslushalDnsResolver
 import zavorateam.yabslushal.util.network.buildKtorEngine
 import zavorateam.yabslushal.util.network.createOkHttpClient
 import zavorateam.yabslushal.util.network.getProxyUrlOrNull
@@ -51,7 +51,7 @@ sealed interface SessionState {
 class SessionManager(
 	private val settings: Settings,
 	private val preferenceManager: PreferenceManager,
-	private val dnsResolver: NavicDnsResolver
+	private val dnsResolver: YabslushalDnsResolver
 ) {
 	val ttlLruCache = TTLLruCache<String, String>(
 		maxSize = 500,
@@ -60,7 +60,7 @@ class SessionManager(
 
 	private companion object {
 		const val TAG = "SessionManager"
-		const val USER_AGENT = "Navic"
+		const val USER_AGENT = "Yabslushal"
 	}
 
 	private val hasStoredCredentials: Boolean

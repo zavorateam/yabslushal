@@ -1,5 +1,5 @@
 /*
- * Navic, a Subsonic music streaming app for Android
+ * Yabslushal, a Subsonic music streaming app for Android
  * Copyright (c) 2026 paige
  * SPDX-License-Identifier: GPL-3.0-only
  */
@@ -22,14 +22,14 @@ import coil3.serviceLoaderEnabled
 import coil3.size.Dimension
 import zavorateam.yabslushal.domain.manager.runtime.PreferenceManager
 import zavorateam.yabslushal.domain.manager.runtime.StorageManager
-import zavorateam.yabslushal.util.network.NavicDnsResolver
+import zavorateam.yabslushal.util.network.YabslushalDnsResolver
 import zavorateam.yabslushal.util.network.createHttpClientWithPreferences
 import kotlin.math.abs
 
 class CoilSingleton(
 	private val context: Context,
 	preferenceManager: PreferenceManager,
-	dnsResolver: NavicDnsResolver,
+	dnsResolver: YabslushalDnsResolver,
 	private val storageManager: StorageManager
 ) {
 	private var sharedDiskCache: DiskCache? = null
