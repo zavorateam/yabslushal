@@ -46,12 +46,15 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      # compileSdk 37 is not part of the runner image yet, so it is installed explicitly.
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
+      # The runner image ships a complete SDK; only the platform build needs to be added.
+      # setup-android is deliberately not used: it installs the legacy "tools" package,
+      # which Google removed from the repository, and the action fails without it.
       - name: Install required SDK components
-        run: sdkmanager --install "platforms;android-37"
+        run: |
+          SDKMANAGER="$(command -v sdkmanager || echo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager")"
+          yes | "$SDKMANAGER" --licenses > /dev/null
+          "$SDKMANAGER" --install "platforms;android-37" "build-tools;37.0.0" || \
+            "$SDKMANAGER" --install "platforms;android-37"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
