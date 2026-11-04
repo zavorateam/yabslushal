@@ -117,6 +117,7 @@ import zavorateam.yabslushal.ui.screen.settings.SettingsDataStorageScreen
 import zavorateam.yabslushal.ui.screen.settings.SettingsDeveloperScreen
 import zavorateam.yabslushal.ui.screen.settings.SettingsDownloadQualityScreen
 import zavorateam.yabslushal.ui.screen.settings.SettingsEqualizerScreen
+import zavorateam.yabslushal.ui.screen.settings.SettingsLibraryLayoutScreen
 import zavorateam.yabslushal.ui.screen.settings.SettingsLogsScreen
 import zavorateam.yabslushal.ui.screen.settings.SettingsNowPlayingScreen
 import zavorateam.yabslushal.ui.screen.settings.SettingsPlaybackScreen
@@ -470,6 +471,9 @@ private fun entryProvider(
 		}
 		entry<Screen.Settings.Equalizer> {
 			SettingsEqualizerScreen()
+		}
+		entry<Screen.Settings.LibraryLayout> {
+			SettingsLibraryLayoutScreen()
 		}
 	}
 }

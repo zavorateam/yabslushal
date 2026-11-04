@@ -8,6 +8,8 @@ package zavorateam.yabslushal.domain.manager.runtime
 
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
+import com.russhwolf.settings.get
+import com.russhwolf.settings.set
 import zavorateam.yabslushal.domain.manager.runtime.base.BasePreferenceManager
 import zavorateam.yabslushal.domain.model.DomainAlbumListType
 import zavorateam.yabslushal.domain.model.DomainArtistListType
@@ -28,6 +30,7 @@ import zavorateam.yabslushal.domain.model.settings.DownloadStorage
 import zavorateam.yabslushal.domain.model.settings.ExplicitContentPlayback
 import zavorateam.yabslushal.domain.model.settings.FontOption
 import zavorateam.yabslushal.domain.model.settings.GridSize
+import zavorateam.yabslushal.domain.model.settings.LibraryLayoutConfig
 import zavorateam.yabslushal.domain.model.settings.ListViewMode
 import zavorateam.yabslushal.domain.model.settings.MarqueeSpeed
 import zavorateam.yabslushal.domain.model.settings.MiniPlayerProgressStyle
@@ -197,6 +200,18 @@ class PreferenceManager(
 	var proxyUrl by preference("")
 	var dangerousSslNoopEnabled by preference(false)
 	var alternateServerAddresses by jsonPreference<List<String>>(emptyList())
+
+	/**
+	 * Order and visibility of the sections on the library home screen.
+	 *
+	 * Stored as JSON, always in a normalized form: unknown or duplicated section ids are
+	 * dropped and newly introduced sections are appended at the end.
+	 */
+	var libraryLayout: LibraryLayoutConfig
+		get() = LibraryLayoutConfig.decode(settings.getStringOrNull(LibraryLayoutConfig.KEY))
+		set(value) {
+			settings[LibraryLayoutConfig.KEY] = LibraryLayoutConfig.encode(value)
+		}
 
 	/**
 	 * Yandex Music OAuth token (`y0_...`) used by the optional Yandex lyrics provider.

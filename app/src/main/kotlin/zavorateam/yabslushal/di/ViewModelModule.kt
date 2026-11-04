@@ -34,6 +34,7 @@ import zavorateam.yabslushal.ui.screen.radio.viewmodel.RadioListViewModel
 import zavorateam.yabslushal.ui.screen.radio.viewmodel.RadioUpdateDialogViewModel
 import zavorateam.yabslushal.ui.screen.search.viewmodel.SearchViewModel
 import zavorateam.yabslushal.ui.screen.settings.viewmodel.CoverArtProvidersViewModel
+import zavorateam.yabslushal.ui.screen.settings.viewmodel.LibraryLayoutViewModel
 import zavorateam.yabslushal.ui.screen.settings.viewmodel.LyricsPriorityViewModel
 import zavorateam.yabslushal.ui.screen.settings.viewmodel.NavtabsViewModel
 import zavorateam.yabslushal.ui.screen.settings.viewmodel.SettingsDataStorageViewModel
@@ -171,6 +172,7 @@ val viewModelModule = module {
 		)
 	}
 	viewModelOf(::NavtabsViewModel)
+	viewModelOf(::LibraryLayoutViewModel)
 	viewModelOf(::CoverArtProvidersViewModel)
 	viewModelOf(::LyricsPriorityViewModel)
 	viewModelOf(::RootViewModel)

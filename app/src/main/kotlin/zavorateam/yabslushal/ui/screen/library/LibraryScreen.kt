@@ -28,6 +28,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import zavorateam.yabslushal.R
 import zavorateam.yabslushal.di.LocalBottomBarScrollManager
+import zavorateam.yabslushal.domain.manager.runtime.PreferenceManager
 import zavorateam.yabslushal.domain.manager.session.LoginManager
 import zavorateam.yabslushal.domain.model.DomainAlbumListType
 import zavorateam.yabslushal.domain.model.DomainArtistListType
@@ -99,6 +100,11 @@ fun LibraryScreen() {
 	val player = koinInject<MediaPlayer>()
 
 	val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+	// Keeping the layout inside composition keeps the grid in sync with the editor:
+	// any change made in Settings instantly re-renders the sections.
+	val preferenceManager = koinInject<PreferenceManager>()
+	val libraryLayout = preferenceManager.libraryLayout
 
 	LaunchedEffect(loginState is LoginUiState.Success) {
 		albumsViewModel.refreshAlbums(false)
@@ -202,7 +208,9 @@ fun LibraryScreen() {
 				},
 
 				genresState = genresLazyItems,
-				statsState = statsState
+				statsState = statsState,
+
+				sectionOrder = libraryLayout.sections
 			)
 		}
 	}

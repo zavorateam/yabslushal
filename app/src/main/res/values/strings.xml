@@ -49,6 +49,11 @@
 	<string name="title_mini_player">Mini Player</string>
 	<string name="title_miscellaneous">Miscellaneous</string>
 	<string name="title_layout">Layout</string>
+	<string name="title_library_sections">Library screen</string>
+	<string name="subtitle_library_sections">Reorder the blocks shown on the home screen</string>
+	<string name="title_section_mix_it_up">Mix It Up</string>
+	<string name="title_reset_order">Reset to default</string>
+	<string name="subtitle_reset_library_sections">Restore the original order and visibility</string>
 	<string name="title_sort_by">Sort by</string>
 	<string name="title_direction">Direction</string>
 	<string name="title_bulk_download">Download all albums</string>

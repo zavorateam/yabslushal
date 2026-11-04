@@ -225,5 +225,9 @@ sealed interface Screen : NavKey {
 		@Immutable
 		@Serializable
 		data object Equalizer : Settings
+
+		@Immutable
+		@Serializable
+		data object LibraryLayout : Settings
 	}
 }

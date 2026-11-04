@@ -193,6 +193,19 @@ fun SettingsAppearanceScreen() {
 					}
 				}
 
+				SettingsGroup(title = { Text(stringResource(R.string.title_library_sections)) }) {
+					SegmentedListItem(
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = 1),
+						onClick = dropUnlessResumed {
+							backStack.add(Screen.Settings.LibraryLayout)
+						},
+						content = { Text(stringResource(R.string.title_library_sections)) },
+						supportingContent = {
+							Text(stringResource(R.string.subtitle_library_sections))
+						}
+					)
+				}
+
 				SettingsGroup(title = { Text(stringResource(R.string.title_miscellaneous)) }) {
 					SettingsToggleItem(
 						content = { Text(stringResource(R.string.option_dynamic_theming)) },

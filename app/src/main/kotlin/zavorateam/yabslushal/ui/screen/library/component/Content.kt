@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.plus
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +36,8 @@ import zavorateam.yabslushal.domain.model.DomainAlbumListType
 import zavorateam.yabslushal.domain.model.DomainArtist
 import zavorateam.yabslushal.domain.model.DomainGenre
 import zavorateam.yabslushal.domain.model.DomainPlaylist
+import zavorateam.yabslushal.domain.model.settings.LibraryLayoutConfig
+import zavorateam.yabslushal.domain.model.settings.LibrarySection
 import zavorateam.yabslushal.ui.component.layout.horizontalSection
 import zavorateam.yabslushal.ui.icons.Icons
 import zavorateam.yabslushal.ui.icons.outlined.Heart
@@ -92,7 +95,10 @@ fun LibraryScreenContent(
 	genresState: LazyPagingItems<DomainGenre>,
 
 	// stats
-	statsState: StatisticsState
+	statsState: StatisticsState,
+
+	// configurable layout of the big sections
+	sectionOrder: List<LibrarySection> = LibraryLayoutConfig.default.sections
 ) {
 	LazyVerticalGrid(
 		modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -102,6 +108,7 @@ fun LibraryScreenContent(
 		horizontalArrangement = Arrangement.spacedBy(5.dp),
 		state = state
 	) {
+		// The four quick actions stay fixed above the configurable sections.
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.LibraryAdd,
 			label = R.string.option_sort_newest,
@@ -127,7 +134,92 @@ fun LibraryScreenContent(
 			start = false
 		)
 
-		horizontalSection(
+		// Single renderer: the order and visibility come straight from the saved layout, there
+		// is exactly one composable per section id.
+		for (section in sectionOrder) {
+			if (!section.visible) continue
+			librarySection(
+				id = section.id,
+				albumsState = albumsState,
+				selectedAlbum = selectedAlbum,
+				selectedAlbumIsStarred = selectedAlbumIsStarred,
+				selectedAlbumRating = selectedAlbumRating,
+				onSelectAlbum = onSelectAlbum,
+				onClearAlbumSelection = onClearAlbumSelection,
+				onStarSelectedAlbum = onStarSelectedAlbum,
+				onRateSelectedAlbum = onRateSelectedAlbum,
+				onPlayAlbumNext = onPlayAlbumNext,
+				onAddAlbumToQueue = onAddAlbumToQueue,
+				onSetShareId = onSetShareId,
+				artistsState = artistsState,
+				selectedArtist = selectedArtist,
+				selectedArtistAlbums = selectedArtistAlbums,
+				selectedArtistIsStarred = selectedArtistIsStarred,
+				onSelectArtist = onSelectArtist,
+				onClearArtistSelection = onClearArtistSelection,
+				onStarSelectedArtist = onStarSelectedArtist,
+				onPlayArtistNext = onPlayArtistNext,
+				onAddArtistToQueue = onAddArtistToQueue,
+				playlistsState = playlistsState,
+				selectedPlaylist = selectedPlaylist,
+				onSelectPlaylist = onSelectPlaylist,
+				onClearPlaylistSelection = onClearPlaylistSelection,
+				onDeletePlaylist = onDeletePlaylist,
+				onPlayPlaylistNext = onPlayPlaylistNext,
+				onAddPlaylistToQueue = onAddPlaylistToQueue,
+				genresState = genresState,
+				statsState = statsState
+			)
+		}
+	}
+}
+
+/**
+ * Renders one library home section. Every branch keeps the exact grid item structure that the
+ * screen used before the layout became configurable, so paging states, selection, dialogs and
+ * scroll behaviour are unchanged.
+ */
+@Suppress("LongParameterList")
+private fun LazyGridScope.librarySection(
+	id: LibrarySection.Id,
+	albumsState: LazyPagingItems<DomainAlbum>,
+	selectedAlbum: DomainAlbum?,
+	selectedAlbumIsStarred: Boolean,
+	selectedAlbumRating: Int,
+	onSelectAlbum: (DomainAlbum) -> Unit,
+	onClearAlbumSelection: () -> Unit,
+	onStarSelectedAlbum: (Boolean) -> Unit,
+	onRateSelectedAlbum: (Int) -> Unit,
+	onPlayAlbumNext: () -> Unit,
+	onAddAlbumToQueue: () -> Unit,
+	onSetShareId: (String) -> Unit,
+	artistsState: LazyPagingItems<DomainArtist>,
+	selectedArtist: DomainArtist?,
+	selectedArtistAlbums: List<DomainAlbum>?,
+	selectedArtistIsStarred: Boolean,
+	onSelectArtist: (DomainArtist) -> Unit,
+	onClearArtistSelection: () -> Unit,
+	onStarSelectedArtist: (Boolean) -> Unit,
+	onPlayArtistNext: () -> Unit,
+	onAddArtistToQueue: () -> Unit,
+	playlistsState: LazyPagingItems<DomainPlaylist>,
+	selectedPlaylist: DomainPlaylist?,
+	onSelectPlaylist: (DomainPlaylist) -> Unit,
+	onClearPlaylistSelection: () -> Unit,
+	onDeletePlaylist: (String) -> Unit,
+	onPlayPlaylistNext: () -> Unit,
+	onAddPlaylistToQueue: () -> Unit,
+	genresState: LazyPagingItems<DomainGenre>,
+	statsState: StatisticsState
+) {
+	when (id) {
+		LibrarySection.Id.MIX_IT_UP -> {
+			// Mix It Up is an entry point that needs the whole collection list to build a mix
+			// from. Until that data is available the section renders nothing instead of a
+			// broken card.
+		}
+
+		LibrarySection.Id.RECENT_ALBUMS -> horizontalSection(
 			title = R.string.option_sort_recent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Recent),
 			state = albumsState,
@@ -150,7 +242,7 @@ fun LibraryScreenContent(
 			)
 		}
 
-		horizontalSection(
+		LibrarySection.Id.PLAYLISTS -> horizontalSection(
 			title = R.string.title_playlists,
 			destination = Screen.PlaylistList(true),
 			state = playlistsState,
@@ -170,7 +262,7 @@ fun LibraryScreenContent(
 			)
 		}
 
-		horizontalSection(
+		LibrarySection.Id.ARTISTS -> horizontalSection(
 			title = R.string.title_artists,
 			destination = Screen.ArtistList(true),
 			state = artistsState,
@@ -191,7 +283,7 @@ fun LibraryScreenContent(
 			)
 		}
 
-		horizontalSection(
+		LibrarySection.Id.GENRES -> horizontalSection(
 			title = R.string.title_genres,
 			destination = Screen.GenreList(true),
 			state = genresState,
@@ -200,25 +292,27 @@ fun LibraryScreenContent(
 			GenreListScreenCard(genre = genreWithAlbums)
 		}
 
-		item(span = { GridItemSpan(maxLineSpan) }) {
-			Text(
-				text = stringResource(R.string.title_statistics),
-				style = MaterialTheme.typography.titleMediumEmphasized,
-				fontWeight = FontWeight(600),
-				modifier = Modifier
-					.heightIn(min = 32.dp)
-					.padding(top = 12.dp, start = 16.dp)
-					.semantics { heading() }
-			)
-		}
+		LibrarySection.Id.STATISTICS -> {
+			item(span = { GridItemSpan(maxLineSpan) }) {
+				Text(
+					text = stringResource(R.string.title_statistics),
+					style = MaterialTheme.typography.titleMediumEmphasized,
+					fontWeight = FontWeight(600),
+					modifier = Modifier
+						.heightIn(min = 32.dp)
+						.padding(top = 12.dp, start = 16.dp)
+						.semantics { heading() }
+				)
+			}
 
-		item(span = { GridItemSpan(maxLineSpan) }) {
-			val backStack = LocalNavStack.current
-			StatisticsOverviewCard(
-				modifier = Modifier.padding(horizontal = 16.dp),
-				statsState = statsState,
-				onClick = { backStack.add(Screen.Statistics(true)) }
-			)
+			item(span = { GridItemSpan(maxLineSpan) }) {
+				val backStack = LocalNavStack.current
+				StatisticsOverviewCard(
+					modifier = Modifier.padding(horizontal = 16.dp),
+					statsState = statsState,
+					onClick = { backStack.add(Screen.Statistics(true)) }
+				)
+			}
 		}
 	}
 }

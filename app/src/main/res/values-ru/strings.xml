@@ -124,6 +124,11 @@
     <string name="title_mini_player">Мини-плеер</string>
     <string name="title_miscellaneous">Разное</string>
     <string name="title_layout">Компоновка</string>
+    <string name="title_library_sections">Главный экран</string>
+    <string name="subtitle_library_sections">Порядок и видимость блоков на главном экране</string>
+    <string name="title_section_mix_it_up">Mix It Up</string>
+    <string name="title_reset_order">Сбросить по умолчанию</string>
+    <string name="subtitle_reset_library_sections">Вернуть исходный порядок и видимость</string>
     <string name="subtitle_now_playing">Настройка отображения текущего трека и текста песен</string>
     <string name="subtitle_bottom_app_bar">Настройка нижней панели и мини-плеера</string>
     <string name="subtitle_playback">Аудио-эффекты и поведение, история прослушивания</string>
