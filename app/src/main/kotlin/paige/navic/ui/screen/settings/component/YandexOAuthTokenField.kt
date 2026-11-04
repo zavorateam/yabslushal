@@ -8,7 +8,6 @@ package paige.navic.ui.screen.settings.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.OutlinedSecureTextField
@@ -60,8 +59,7 @@ fun YandexOAuthTokenField(
 	OutlinedSecureTextField(
 		modifier = modifier
 			.heightIn(min = 60.dp)
-			.fillMaxWidth()
-			.padding(horizontal = 16.dp),
+			.fillMaxWidth(),
 		state = state,
 		label = { Text("Яндекс OAuth") },
 		supportingText = { Text("Токен вида y0_... для текстов песен из Яндекс Музыки") },

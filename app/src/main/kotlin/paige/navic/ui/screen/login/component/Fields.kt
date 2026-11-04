@@ -117,5 +117,8 @@ fun LoginScreenFields(
 	)
 
 	// Yandex Music OAuth token, optional. Enables the Yandex lyrics provider.
-	YandexOAuthTokenField(enabled = !isBusy)
+	YandexOAuthTokenField(
+		modifier = Modifier.padding(horizontal = 16.dp),
+		enabled = !isBusy
+	)
 }
