@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import paige.navic.R
+import paige.navic.ui.screen.settings.component.YandexOAuthTokenField
 
 @Composable
 fun LoginScreenFields(
@@ -114,4 +115,7 @@ fun LoginScreenFields(
 			onLogin()
 		}
 	)
+
+	// Yandex Music OAuth token, optional. Enables the Yandex lyrics provider.
+	YandexOAuthTokenField(enabled = !isBusy)
 }

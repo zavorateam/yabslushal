@@ -146,6 +146,14 @@ android {
 		includeInApk = false
 		includeInBundle = false
 	}
+
+	testOptions {
+		unitTests {
+			// android.util.Log (used by paige.navic.util.Logger) is a stub on the JVM;
+			// return default values instead of throwing "not mocked".
+			isReturnDefaultValues = true
+		}
+	}
 }
 
 room3 {
@@ -218,4 +226,16 @@ dependencies {
 	implementation(libs.cryptohash)
 	implementation(libs.mimetypes)
 	coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+	// Testing
+	testImplementation(libs.junit)
+	testImplementation(libs.kotlin.test)
+	testImplementation(libs.kotlinx.coroutines.test)
+	testImplementation(libs.ktor.client.mock)
+
+	androidTestImplementation(libs.androidx.test.junit)
+	androidTestImplementation(libs.androidx.test.runner)
+	androidTestImplementation(libs.androidx.espresso.core)
+	androidTestImplementation(libs.kotlinx.coroutines.test)
+	androidTestImplementation(libs.ktor.client.mock)
 }

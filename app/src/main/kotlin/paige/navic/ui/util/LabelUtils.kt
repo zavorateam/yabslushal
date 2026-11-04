@@ -88,4 +88,5 @@ fun LyricsProvider.Id.label() = when (this) {
 	LyricsProvider.Id.SUBSONIC -> "Subsonic"
 	LyricsProvider.Id.LYRICS_PLUS -> "LyricsPlus"
 	LyricsProvider.Id.LRCLIB -> "LRCLIB"
+	LyricsProvider.Id.YANDEX -> "Яндекс Музыка"
 }

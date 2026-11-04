@@ -42,6 +42,8 @@ import paige.navic.domain.model.settings.Theme
 import paige.navic.domain.model.settings.ThemeMode
 import paige.navic.domain.model.settings.ToolbarPosition
 import paige.navic.playback.exoplayer.impl.listeners.ExoDiscordIntegration
+import paige.navic.util.getEncryptedString
+import paige.navic.util.insertEncryptedString
 import com.russhwolf.settings.Settings as KmpSettings
 
 class PreferenceManager(
@@ -195,4 +197,16 @@ class PreferenceManager(
 	var proxyUrl by preference("")
 	var dangerousSslNoopEnabled by preference(false)
 	var alternateServerAddresses by jsonPreference<List<String>>(emptyList())
+
+	/**
+	 * Yandex Music OAuth token (`y0_...`) used by the optional Yandex lyrics provider.
+	 * Stored encrypted, the same way as the account password.
+	 */
+	var yandexOAuthToken
+		get() = settings.getEncryptedString(YANDEX_TOKEN_KEY, "")
+		set(value) = settings.insertEncryptedString(YANDEX_TOKEN_KEY, value.ifBlank { null })
+
+	private companion object {
+		const val YANDEX_TOKEN_KEY = "yandexOAuthToken"
+	}
 }

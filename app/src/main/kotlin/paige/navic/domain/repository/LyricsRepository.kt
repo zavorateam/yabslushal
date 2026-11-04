@@ -20,15 +20,17 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import paige.navic.database.dao.LyricDao
 import paige.navic.database.dao.SongDao
 import paige.navic.database.entity.LyricEntity
 import paige.navic.database.mapper.toDomainModel
+import paige.navic.domain.lyrics.LrcLibLyricsSource
+import paige.navic.domain.lyrics.LrcLibSource
+import paige.navic.domain.lyrics.YandexLyricsSource
+import paige.navic.domain.lyrics.YandexMusicLyricsSource
+import paige.navic.domain.manager.runtime.PreferenceManager
 import paige.navic.domain.manager.session.SessionManager
 import paige.navic.domain.model.DomainSong
 import paige.navic.domain.model.lyrics.LyricsConfig
@@ -43,7 +45,8 @@ class LyricsRepository(
 	private val lyricDao: LyricDao,
 	private val songDao: SongDao,
 	private val settings: Settings,
-	private val sessionManager: SessionManager
+	private val sessionManager: SessionManager,
+	private val preferenceManager: PreferenceManager
 ) {
 
 	private val client = HttpClient {
@@ -55,12 +58,11 @@ class LyricsRepository(
 	}
 	private val json = Json { ignoreUnknownKeys = true }
 
-	// regex for finding parenthesis as they are often for crediting producers which can make lrclib
-	// miss a search. example "songTitle (prod. producer123)"
-	private companion object {
-		val PARENTHETICAL = Regex("""\([^)]*\)""")
-		val REPEATED_WHITESPACE = Regex("""\s+""")
-	}
+	/** LRCLIB: exact `/api/get` lookup first, loose `/api/search` as a fallback. */
+	private val lrcLibSource: LrcLibLyricsSource = LrcLibSource(client)
+
+	/** Yandex Music lyrics, requires an OAuth token configured in settings/onboarding. */
+	private val yandexSource: YandexLyricsSource = YandexMusicLyricsSource(client)
 
 	private fun getConfig(): LyricsConfig {
 		try {
@@ -105,9 +107,21 @@ class LyricsRepository(
 					}
 
 					LyricsProvider.Id.LRCLIB -> {
-						val raw = fetchRawLrcLib(song, currentConfig)
+						val raw = lrcLibSource.fetchLyrics(song)
 						rawContentToCache = raw
 						raw?.let { LyricsContentParser.parse(it) }
+					}
+
+					LyricsProvider.Id.YANDEX -> {
+						val token = preferenceManager.yandexOAuthToken
+						if (token.isBlank()) {
+							// not an error: the provider is enabled but never configured
+							null
+						} else {
+							val raw = yandexSource.fetchLyrics(song, token)
+							rawContentToCache = raw
+							raw?.let { LyricsContentParser.parse(it) }
+						}
 					}
 
 					LyricsProvider.Id.SUBSONIC -> {
@@ -168,48 +182,6 @@ class LyricsRepository(
 		}
 		return null
 	}
-
-	private suspend fun fetchRawLrcLib(song: DomainSong, config: LyricsConfig): String? {
-		return try {
-			val response = client.get(config.lrcLibBaseUrl) {
-				// using /api/search with q param to search for lyrics more loosely, finds lyrics
-				// more consistently because of how one may tag their music. Also looking at how i.e
-				// navidrome tags albumless songs with [Unknown Album] which will never find a result
-				parameter("q", "${song.title.withoutParentheticals()} ${song.artistName}")
-				accept(ContentType.Application.Json)
-			}
-			if (!response.status.isSuccess()) {
-				throw Exception("unsuccessful status code ${response.status.value}")
-			}
-
-			// lrclib returns up to 20 results in the form of a json object, select the first one
-			// with synced lyrics, or first one with unsynced lyrics if none have any synced. Better
-			// matching can be added further to then look for songs that do have a similar album or
-			// duration though first result should be fine?
-			val results = json.parseToJsonElement(response.bodyAsText()).jsonArray
-			val match = results.firstOrNull { it.lyricsOrNull("syncedLyrics") != null }
-				?: results.firstOrNull { it.lyricsOrNull("plainLyrics") != null }
-
-			match?.toString()
-		} catch (ex: Exception) {
-			Logger.w(
-				"LyricsRepository",
-				"failed fetching from lrclib",
-				ex
-			)
-			null
-		}
-	}
-
-	private fun JsonElement.lyricsOrNull(key: String): String? =
-		jsonObject[key]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
-
-	// remove parts of song title as defined by regex PARENTHETICAL
-	private fun String.withoutParentheticals(): String =
-		replace(PARENTHETICAL, " ")
-			.replace(REPEATED_WHITESPACE, " ")
-			.trim()
-			.ifEmpty { this }
 
 	private suspend fun fetchRawLyricsPlus(song: DomainSong, config: LyricsConfig): String? =
 		coroutineScope {

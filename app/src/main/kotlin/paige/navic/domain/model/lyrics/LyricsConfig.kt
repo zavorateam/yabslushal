@@ -13,16 +13,21 @@ data class LyricsConfig(
 	val providers: List<LyricsProvider>,
 	val lyricsPlusMirrors: List<String>,
 	val lrcLibBaseUrl: String,
+	/** Base url of the Yandex Music API, e.g. https://api.music.yandex.net */
+	val yandexBaseUrl: String = DEFAULT_YANDEX_BASE_URL,
 	val version: Int
 ) {
 	companion object {
 		const val KEY = "lyricsConfig"
-		const val VERSION = 1
+		const val VERSION = 2
+		const val DEFAULT_YANDEX_BASE_URL = "https://api.music.yandex.net"
+
 		val Default = LyricsConfig(
 			providers = listOf(
 				LyricsProvider(LyricsProvider.Id.SUBSONIC, true),
 				LyricsProvider(LyricsProvider.Id.LRCLIB, false),
-				LyricsProvider(LyricsProvider.Id.LYRICS_PLUS, false)
+				LyricsProvider(LyricsProvider.Id.LYRICS_PLUS, false),
+				LyricsProvider(LyricsProvider.Id.YANDEX, false)
 			),
 			lyricsPlusMirrors = listOf(
 				"https://lyricsplus.atomix.one",
@@ -33,6 +38,7 @@ data class LyricsConfig(
 				"https://lyricsplus.prjktla.workers.dev"
 			),
 			lrcLibBaseUrl = "https://lrclib.net/api/search",
+			yandexBaseUrl = DEFAULT_YANDEX_BASE_URL,
 			version = VERSION
 		)
 	}

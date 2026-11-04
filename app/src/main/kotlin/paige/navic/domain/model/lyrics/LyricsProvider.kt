@@ -17,6 +17,7 @@ data class LyricsProvider(
 	enum class Id {
 		SUBSONIC,
 		LYRICS_PLUS,
-		LRCLIB
+		LRCLIB,
+		YANDEX
 	}
 }

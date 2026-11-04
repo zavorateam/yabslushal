@@ -45,6 +45,7 @@ import paige.navic.ui.screen.settings.component.SettingsGroup
 import paige.navic.ui.screen.settings.component.SettingsGroupDefaults
 import paige.navic.ui.screen.settings.component.SettingsNavItem
 import paige.navic.ui.screen.settings.component.SettingsToggleItem
+import paige.navic.ui.screen.settings.component.YandexOAuthTokenField
 import paige.navic.util.network.PROXY_URL_REGEX
 
 @Composable
@@ -162,6 +163,12 @@ fun SettingsConnectionOptionsScreen() {
 								Text(stringResource(R.string.info_incorrect_proxy_url_format))
 							}
 						}
+					)
+				}
+				SettingsGroup {
+					YandexOAuthTokenField(
+						modifier = Modifier.padding(horizontal = (-16).dp),
+						preferenceManager = preferenceManager
 					)
 				}
 				SettingsGroup {
