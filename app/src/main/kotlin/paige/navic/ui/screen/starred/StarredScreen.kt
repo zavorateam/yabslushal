@@ -158,6 +158,20 @@ fun StarredScreen() {
 						player.playNow(it, index)
 					}
 				},
+				onPlayAllSongs = {
+					songsLazyItems?.itemSnapshotList?.items?.filterNotNull()?.let { items ->
+						if (items.isNotEmpty()) {
+							player.playNow(items, 0)
+						}
+					}
+				},
+				onShuffleSongs = {
+					songsLazyItems?.itemSnapshotList?.items?.filterNotNull()?.let { items ->
+						if (items.isNotEmpty()) {
+							player.shufflePlay(items)
+						}
+					}
+				},
 				onSelectSong = {
 					songsViewModel.selected = it
 				},

@@ -234,7 +234,14 @@ fun SettingsAppearanceScreen() {
 						selectedChoice = preferenceManager.animationStyle,
 						onChoiceSelected = { preferenceManager.animationStyle = it },
 						label = { it.name },
-						shapes = SegmentedListItemDefaults.segmentedShapes(index = 5, count = 6)
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 5, count = 7)
+					)
+					SettingsToggleItem(
+						content = { Text("Отображать доп. разделы в Избранном") },
+						supportingContent = { Text("Показывать часто прослушиваемые и рекомендации") },
+						checked = preferenceManager.showExtraInFavorites,
+						onCheckedChange = { preferenceManager.showExtraInFavorites = it },
+						shapes = SegmentedListItemDefaults.segmentedShapes(index = 6, count = 7)
 					)
 				}
 			}

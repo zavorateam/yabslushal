@@ -104,6 +104,7 @@ fun NowPlayingArtworkPager(
 				onClick = if (enabled) dropUnlessResumed {
 					when (tapAction) {
 						CoverArtTapAction.ShowLyrics -> backStack.add(Screen.Lyrics)
+						else -> {}
 					}
 				} else null
 			)

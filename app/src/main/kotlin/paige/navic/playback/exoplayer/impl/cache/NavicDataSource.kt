@@ -217,14 +217,7 @@ class NavicDataSource(
 			val isTranscode = !transcodeDecision.canDirectPlay &&
 				transcodeDecision.canTranscode &&
 				transcodeDecision.transcodeParams != null
-			val streamUrl = if (isTranscode) {
-				sessionManager.api.getTranscodeStreamUrl(
-					id, MediaType.SONG, 0,
-					transcodeDecision.transcodeParams!!
-				).toStreamUri().toString()
-			} else {
-				defaultStreamUrl.toStreamUri().toString()
-			}
+			val streamUrl = defaultStreamUrl.toStreamUri().toString()
 
 			ttlLruCache.put(cacheKey, streamUrl)
 

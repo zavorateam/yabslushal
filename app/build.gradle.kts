@@ -22,6 +22,14 @@ configurations.all {
 
 kotlin {
 	jvmToolchain(21)
+	compilerOptions {
+		freeCompilerArgs.addAll(
+			"-Xskip-metadata-version-check",
+			"-opt-in=kotlin.time.ExperimentalTime",
+			"-opt-in=kotlin.RequiresOptIn",
+			"-XXLanguage:+ExplicitBackingFields"
+		)
+	}
 }
 
 val isTaskRelease =
@@ -83,7 +91,7 @@ android {
 
 		debug {
 			applicationIdSuffix = ".debug"
-			resValue("string", "app_name", "Navic (Dev)")
+			resValue("string", "app_name", "Yabslushal (Dev)")
 			signingConfig = signingConfigs.getByName("debugConfig")
 			buildConfigField("boolean", "FDROID", "false")
 		}
@@ -99,27 +107,15 @@ android {
 			"\"$escaped\""
 		} ?: "null"
 
-		fun executeCommand(vararg args: String): String? {
-			val command = Runtime.getRuntime().exec(args)
-			val result = command.waitFor()
-			return if (result == 0) {
-				command.inputStream.readBytes()
-					.toString(Charsets.UTF_8)
-					.takeIf { it.isNotBlank() }
-			} else {
-				null
-			}
-		}
+		val commitHash = "dev"
+		val commitMessage = "dev"
+		val commitAuthor = "dev"
+		val commitBranchName = "main"
 
-		val commitHash = executeCommand("git", "rev-parse", "HEAD")
-		val commitMessage = executeCommand("git", "log", "-1", "--pretty=%B")
-		val commitAuthor = executeCommand("git", "log", "-1", "--pretty=%an")
-		val commitBranchName = executeCommand("git", "branch", "--show-current")
-
-		buildConfigField("String", "GIT_COMMIT_HASH", commitHash?.wrapString() ?: "\"unknown\"")
-		buildConfigField("String", "GIT_COMMIT_MESSAGE", commitMessage?.wrapString() ?: "\"unknown\"")
-		buildConfigField("String", "GIT_COMMIT_AUTHOR", commitAuthor?.wrapString() ?: "\"unknown\"")
-		buildConfigField("String", "GIT_BRANCH_NAME", commitBranchName?.wrapString() ?: "\"unknown\"")
+		buildConfigField("String", "GIT_COMMIT_HASH", commitHash.wrapString())
+		buildConfigField("String", "GIT_COMMIT_MESSAGE", commitMessage.wrapString())
+		buildConfigField("String", "GIT_COMMIT_AUTHOR", commitAuthor.wrapString())
+		buildConfigField("String", "GIT_BRANCH_NAME", commitBranchName.wrapString())
 	}
 
 	packaging {

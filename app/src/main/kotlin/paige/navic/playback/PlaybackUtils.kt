@@ -9,7 +9,6 @@ package paige.navic.playback
 import android.media.MediaCodecList
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.decoder.ffmpeg.FfmpegLibrary
 import dev.zt64.subsonic.api.model.ClientInfo
 import paige.navic.util.Logger
 
@@ -143,21 +142,7 @@ object PlaybackUtils {
 	}
 
 	private fun addFfmpegDecoders(out: MutableMap<String, CodecCaps>) {
-		if (!FfmpegLibrary.isAvailable()) {
-			Logger.w(TAG, "ffmpeg is currently unavailable")
-			return
-		}
-		for (codec in KNOWN_SUPPORTED_FFMPEG_DECODERS) {
-			if (!FfmpegLibrary.supportsFormat("$MIMETYPE_PREFIX$codec")) {
-				continue
-			}
-
-			out.getOrPut(codec) { CodecCaps() }.let { caps ->
-				out[codec] = caps.copy(
-					maxChannels = maxOf(caps.maxChannels, FFMPEG_MAX_CHANNELS)
-				)
-			}
-		}
+		Logger.w(TAG, "ffmpeg is currently unavailable")
 	}
 
 	private fun addNativeDecoders(out: MutableMap<String, CodecCaps>) {

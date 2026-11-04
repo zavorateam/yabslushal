@@ -83,7 +83,7 @@ class DbRepository(
 		onProgress: suspend (Float, Int) -> Unit = { _, _ -> }
 	): Result<Unit> = runDbOp {
 		coroutineScope {
-			val progressCallback = suspend { progress: Float, message: Int ->
+			val progressCallback: suspend (Float, Int) -> Unit = { progress: Float, message: Int ->
 				Logger.i("DbRepository", "$progress message=$message")
 				onProgress(progress, message)
 			}

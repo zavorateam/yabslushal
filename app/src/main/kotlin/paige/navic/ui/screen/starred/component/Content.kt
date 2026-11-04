@@ -24,7 +24,12 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,6 +65,9 @@ import paige.navic.ui.component.layout.ArtCarouselItem
 import paige.navic.ui.component.layout.ArtGridPlaceholder
 import paige.navic.ui.component.sheet.ArtistSheet
 import paige.navic.ui.component.sheet.CollectionSheet
+import paige.navic.ui.icons.Icons
+import paige.navic.ui.icons.filled.Play
+import paige.navic.ui.icons.outlined.Shuffle
 import paige.navic.ui.navigation.Screen
 import paige.navic.ui.screen.playlist.dialog.PlaylistUpdateDialog
 
@@ -82,6 +90,8 @@ fun StarredScreenContent(
 	onPlaySongNext: (DomainSong) -> Unit,
 	onAddSongToQueue: (DomainSong) -> Unit,
 	onPlaySong: (Int) -> Unit,
+	onPlayAllSongs: () -> Unit = {},
+	onShuffleSongs: () -> Unit = {},
 	onSetSongRating: (Int) -> Unit,
 	onDownloadSong: (DomainSong) -> Unit,
 	onCancelDownloadSong: (DomainSong) -> Unit,
@@ -196,6 +206,45 @@ fun StarredScreenContent(
 							)
 						})
 					)
+				}
+				Row(
+					modifier = Modifier
+						.fillMaxWidth()
+						.padding(horizontal = 16.dp, vertical = 6.dp),
+					horizontalArrangement = Arrangement.spacedBy(10.dp),
+					verticalAlignment = Alignment.CenterVertically
+				) {
+					OutlinedButton(
+						modifier = Modifier.size(width = 52.dp, height = 44.dp),
+						onClick = onShuffleSongs,
+						shape = CircleShape,
+						contentPadding = PaddingValues(0.dp)
+					) {
+						Icon(
+							Icons.Outlined.Shuffle,
+							contentDescription = stringResource(R.string.action_shuffle),
+							modifier = Modifier.size(24.dp)
+						)
+					}
+					Button(
+						modifier = Modifier
+							.weight(1f)
+							.height(44.dp),
+						onClick = onPlayAllSongs,
+						shape = CircleShape
+					) {
+						Icon(
+							Icons.Filled.Play,
+							null,
+							modifier = Modifier
+								.size(25.dp)
+								.padding(end = 3.dp)
+						)
+						Text(
+							stringResource(R.string.action_play),
+							fontWeight = FontWeight.SemiBold
+						)
+					}
 				}
 				val rowCount = remember(songCount) {
 					songCount.coerceIn(1, 3)

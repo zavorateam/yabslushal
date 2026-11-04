@@ -177,7 +177,7 @@ class ExoStateHolder : KoinComponent {
 			audioSinkBuilder
 				.setEnableFloatOutput(true)
 				.setAudioProcessorChain(object : AudioProcessorChain {
-					override fun getAudioProcessors(inputFormat: Format): Array<out AudioProcessor> {
+					override fun getAudioProcessors(): Array<AudioProcessor> {
 						return audioProcessors
 					}
 

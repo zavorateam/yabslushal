@@ -8,12 +8,22 @@ package paige.navic.ui.screen.song
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -24,9 +34,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
@@ -57,6 +69,9 @@ import paige.navic.ui.component.layout.PullToRefreshBox
 import paige.navic.ui.component.layout.RootBottomBar
 import paige.navic.ui.component.layout.RootTopBar
 import paige.navic.ui.core.UiState
+import paige.navic.ui.icons.Icons
+import paige.navic.ui.icons.filled.Play
+import paige.navic.ui.icons.outlined.Shuffle
 import paige.navic.ui.navigation.PersistentViewModelStoreOwner
 import paige.navic.ui.screen.song.component.SongListScreenItem
 import paige.navic.ui.screen.song.component.SongListScreenSortButton
@@ -67,11 +82,13 @@ import paige.navic.ui.viewmodel.RootViewModel
 @Composable
 fun SongListScreen(
 	nested: Boolean,
-	listType: DomainSongListType? = null
+	listType: DomainSongListType? = null,
+	starredOnly: Boolean = false
 ) {
+	val initialFilters = if (starredOnly) setOf(paige.navic.domain.model.DomainFilter.Starred) else null
 	val viewModel = koinViewModel<SongListViewModel>(
-		key = listType.toString(),
-		parameters = { parametersOf(listType) },
+		key = "${listType}_starred_$starredOnly",
+		parameters = { parametersOf(listType, initialFilters) },
 		viewModelStoreOwner = if (nested) {
 			LocalViewModelStoreOwner.current!!
 		} else {
@@ -171,6 +188,57 @@ fun SongListScreen(
 				state = listState
 			) {
 				if (itemCount > 0 && lazyPagingItems != null) {
+					item {
+						Row(
+							modifier = Modifier
+								.fillMaxWidth()
+								.padding(horizontal = 16.dp, vertical = 6.dp),
+							horizontalArrangement = Arrangement.spacedBy(10.dp),
+							verticalAlignment = Alignment.CenterVertically
+						) {
+							OutlinedButton(
+								modifier = Modifier.size(width = 52.dp, height = 44.dp),
+								onClick = {
+									val items = lazyPagingItems.itemSnapshotList.items.filterNotNull()
+									if (items.isNotEmpty()) {
+										player.shufflePlay(items)
+									}
+								},
+								shape = CircleShape,
+								contentPadding = PaddingValues(0.dp)
+							) {
+								Icon(
+									Icons.Outlined.Shuffle,
+									contentDescription = stringResource(R.string.action_shuffle),
+									modifier = Modifier.size(24.dp)
+								)
+							}
+							Button(
+								modifier = Modifier
+									.weight(1f)
+									.height(44.dp),
+								onClick = {
+									val items = lazyPagingItems.itemSnapshotList.items.filterNotNull()
+									if (items.isNotEmpty()) {
+										player.playNow(items, 0)
+									}
+								},
+								shape = CircleShape
+							) {
+								Icon(
+									Icons.Filled.Play,
+									null,
+									modifier = Modifier
+										.size(25.dp)
+										.padding(end = 3.dp)
+								)
+								Text(
+									stringResource(R.string.action_play),
+									fontWeight = FontWeight.SemiBold
+								)
+							}
+						}
+					}
 					items(itemCount) { index ->
 						val song = lazyPagingItems[index] ?: return@items
 
@@ -208,7 +276,13 @@ fun SongListScreen(
 								}
 							},
 							onClick = {
-								player.playNow(song)
+								val items = lazyPagingItems?.itemSnapshotList?.items?.filterNotNull().orEmpty()
+								if (items.isNotEmpty()) {
+									val songIndex = items.indexOf(song).coerceAtLeast(0)
+									player.playNow(items, songIndex)
+								} else {
+									player.playNow(song)
+								}
 							},
 							onSetRating = { it: Int -> viewModel.rateSelectedSong(it) },
 							download = download,

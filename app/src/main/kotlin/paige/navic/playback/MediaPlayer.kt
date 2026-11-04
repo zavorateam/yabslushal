@@ -1001,7 +1001,10 @@ class MediaPlayer(
 	}
 
 	fun shufflePlay(collection: DomainSongCollection) = this@MediaPlayer.launch {
-		val songs = collection.sortedSongs()
+		shufflePlay(collection.sortedSongs())
+	}
+
+	fun shufflePlay(songs: List<DomainSong>) = this@MediaPlayer.launch {
 		if (songs.isEmpty()) {
 			clearQueue()
 			return@launch

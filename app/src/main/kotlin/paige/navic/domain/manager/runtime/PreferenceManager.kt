@@ -167,6 +167,8 @@ class PreferenceManager(
 	var artistFilters by preference(0)
 	var playlistFilters by preference(0)
 
+	var showExtraInFavorites by preference(false)
+
 	fun customHeadersMap(): Map<String, String> = buildMap {
 		for (line in customHeaders.lines()) {
 			val parts = line.split(":", limit = 2)
