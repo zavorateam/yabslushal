@@ -31,6 +31,18 @@ class SongRepository(
 		return songDao.getRandomSongsList(count).map { it.toDomainModel() }
 	}
 
+	/** Genres present in the local library, for the Mix It Up filter dialog. */
+	suspend fun getGenres(): List<String> = songDao.getDistinctGenres()
+
+	/** Moods present in the local library, for the Mix It Up filter dialog. */
+	suspend fun getMoods(): List<String> = songDao.getPackedMoods()
+		?.split("||")
+		.orEmpty()
+		.map { it.trim() }
+		.filter { it.isNotEmpty() }
+		.distinct()
+		.sorted()
+
 	/**
 	 * Bounded candidate pool for the Mix It Up engine.
 	 *

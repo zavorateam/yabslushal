@@ -51,6 +51,7 @@ import zavorateam.yabslushal.domain.model.DomainSong
 import zavorateam.yabslushal.domain.model.DomainSongCollection
 import zavorateam.yabslushal.domain.model.settings.ExplicitContentPlayback
 import zavorateam.yabslushal.domain.model.settings.ReplayGainMode
+import zavorateam.yabslushal.domain.mix.MixFilter
 import zavorateam.yabslushal.domain.mix.MixItUpEngine
 import zavorateam.yabslushal.domain.repository.PlayerStateRepository
 import zavorateam.yabslushal.domain.repository.SongRepository
@@ -1074,7 +1075,7 @@ class MediaPlayer(
 	 * Builds on the local library only, so it also works offline and inside a slow network.
 	 * When the engine cannot produce anything, playback falls back to the plain shuffle.
 	 */
-	fun startMixItUp() = this@MediaPlayer.launch {
+	fun startMixItUp(filter: MixFilter = MixFilter.NONE) = this@MediaPlayer.launch {
 		val state = uiState.value
 
 		val downloadedIds = downloadManager.downloadedSongs.value.keys
@@ -1096,7 +1097,8 @@ class MediaPlayer(
 			count = mixStartBatchSize.coerceAtMost(candidates.size.coerceAtLeast(1)),
 			variability = preferenceManager.mixItUpVariability.toDouble(),
 			switchRate = preferenceManager.mixItUpSwitchRate.toDouble(),
-			seedState = System.nanoTime()
+			seedState = System.nanoTime(),
+			filter = filter
 		)
 
 		val byId = candidates.associateBy { it.id }
@@ -1107,6 +1109,12 @@ class MediaPlayer(
 		loadingCollectionId = null
 
 		if (songs.isEmpty()) {
+			// A filter can legitimately match nothing: say so instead of silently playing
+			// random songs that ignore the user's choice.
+			if (!filter.isEmpty) {
+				snackBarManager.notify(zavorateam.yabslushal.R.string.snackbar_mix_empty)
+				return@launch
+			}
 			shufflePlay(songRepository.getMixCandidatePool(mixStartBatchSize))
 		} else {
 			shufflePlay(songs)

@@ -47,8 +47,10 @@ import zavorateam.yabslushal.ui.navigation.PersistentViewModelStoreOwner
 import zavorateam.yabslushal.ui.screen.album.viewmodel.AlbumListViewModel
 import zavorateam.yabslushal.ui.screen.artist.viewmodel.ArtistListViewModel
 import zavorateam.yabslushal.ui.screen.genre.viewmodel.GenreListViewModel
+import zavorateam.yabslushal.ui.screen.library.dialog.MixItUpDialog
 import zavorateam.yabslushal.ui.screen.library.component.LibraryScreenContent
 import zavorateam.yabslushal.ui.screen.playlist.dialog.PlaylistCreateDialog
+import zavorateam.yabslushal.ui.screen.library.viewmodel.MixItUpViewModel
 import zavorateam.yabslushal.ui.screen.playlist.viewmodel.PlaylistListViewModel
 import zavorateam.yabslushal.ui.screen.stats.viewmodel.StatisticsViewModel
 import zavorateam.yabslushal.ui.viewmodel.RootViewModel
@@ -98,6 +100,8 @@ fun LibraryScreen() {
 	var playlistCreateDialogShown by rememberSaveable { mutableStateOf(false) }
 
 	val player = koinInject<MediaPlayer>()
+	val mixViewModel = koinViewModel<MixItUpViewModel>()
+	val mixState by mixViewModel.state.collectAsStateWithLifecycle()
 
 	val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -212,11 +216,8 @@ fun LibraryScreen() {
 
 				sectionOrder = libraryLayout.sections,
 
-				onStartMixItUp = {
-					// A quick start must never wait on the network: build from whatever is
-					// already in the local library, and let the queue engine keep it going.
-					player.startMixItUp()
-				}
+				// The tile opens the filter dialog; the mix starts only from there.
+				onStartMixItUp = { mixViewModel.open() }
 			)
 		}
 	}
@@ -255,4 +256,18 @@ fun LibraryScreen() {
 			onRefresh = { playlistsViewModel.refreshPlaylists(true) }
 		)
 	}
+
+	MixItUpDialog(
+		state = mixState,
+		onToggleGenre = mixViewModel::toggleGenre,
+		onToggleMood = mixViewModel::toggleMood,
+		onDurationChange = mixViewModel::setDuration,
+		onTempoChange = mixViewModel::setTempo,
+		onClear = mixViewModel::selectNothing,
+		onStart = {
+			mixViewModel.dismiss()
+			player.startMixItUp(mixState.filter)
+		},
+		onDismiss = mixViewModel::dismiss
+	)
 }

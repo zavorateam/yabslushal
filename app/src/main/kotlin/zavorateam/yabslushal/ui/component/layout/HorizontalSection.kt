@@ -10,6 +10,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -20,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -98,36 +101,39 @@ fun LazyGridScope.header(
 	destination: NavKey,
 	active: Boolean
 ) {
-	item(span = { GridItemSpan(1) }) {
-		Text(
-			stringResource(title, formatArgs),
-			style = MaterialTheme.typography.titleMediumEmphasized,
-			fontWeight = FontWeight(600),
+	// The title row always takes the full width. When it only claimed one cell it landed next
+	// to a leftover quick action button whenever the number of those was odd, and every section
+	// below was shifted by half a row.
+	item(span = { GridItemSpan(maxLineSpan) }) {
+		val backStack = LocalNavStack.current
+		Row(
 			modifier = Modifier
+				.fillMaxWidth()
 				.heightIn(min = 32.dp)
-				.padding(top = 12.dp, start = 16.dp)
-				.semantics { heading() }
-		)
-	}
-	if (active) {
-		item(span = { GridItemSpan(1) }) {
-			val backStack = LocalNavStack.current
+				.padding(top = 12.dp, start = 16.dp, end = 16.dp),
+			verticalAlignment = Alignment.CenterVertically
+		) {
 			Text(
-				stringResource(R.string.action_see_all),
-				fontSize = 12.sp,
-				color = MaterialTheme.colorScheme.primary,
-				textAlign = TextAlign.Right,
+				stringResource(title, formatArgs),
+				style = MaterialTheme.typography.titleMediumEmphasized,
+				fontWeight = FontWeight(600),
 				modifier = Modifier
-					.heightIn(min = 32.dp)
-					.padding(top = 12.dp, end = 16.dp)
-					.clickable(
+					.weight(1f)
+					.semantics { heading() }
+			)
+			if (active) {
+				Text(
+					stringResource(R.string.action_see_all),
+					fontSize = 12.sp,
+					color = MaterialTheme.colorScheme.primary,
+					textAlign = TextAlign.Right,
+					modifier = Modifier.clickable(
 						interactionSource = null,
 						indication = null,
-						onClick = dropUnlessResumed {
-					    	backStack.add(destination)
-					    }
+						onClick = dropUnlessResumed { backStack.add(destination) }
 					)
-			)
+				)
+			}
 		}
 	}
 }

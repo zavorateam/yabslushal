@@ -155,11 +155,13 @@ class MixItUpEngine(
 		count: Int,
 		variability: Double,
 		switchRate: Double,
-		seedState: Long
+		seedState: Long,
+		filter: MixFilter = MixFilter.NONE
 	): List<String> {
 		if (count <= 0 || candidates.isEmpty()) return emptyList()
 
 		val pool = candidates
+			.filter { matchesFilter(it, filter) }
 			.distinctBy { it.id }
 			.take(poolSize)
 		if (pool.isEmpty()) return emptyList()
@@ -213,6 +215,53 @@ class MixItUpEngine(
 		 * in a small constant instead of scanning the whole library.
 		 */
 		const val poolSize = 256
+
+		/**
+		 * Applies the hard requirements of [filter] to a single song.
+		 *
+		 * Genres and moods must overlap, the duration and tempo buckets must match, and a seed artist
+		 * keeps only that artist. A seed song is not filtered out here: it is handled as a starting
+		 * point by the caller so the mix can drift away from it.
+		 */
+		fun matchesFilter(
+			song: DomainSong,
+			filter: MixFilter
+		): Boolean {
+			if (filter.isEmpty) return true
+
+			if (filter.seedArtist != null && !filter.seedArtist.isBlank()) {
+				val seedKey = MixFeatures.key(filter.seedArtist)
+				val songKeys = buildSet {
+					MixFeatures.key(song.artistName)?.let(::add)
+					song.artists.forEach { MixFeatures.key(it.name)?.let(::add) }
+					song.albumArtists.forEach { MixFeatures.key(it.name)?.let(::add) }
+				}
+				if (seedKey != null && seedKey !in songKeys) return false
+			}
+
+			if (filter.genres.isNotEmpty()) {
+				val songGenres = buildSet {
+					song.genre?.let { MixFeatures.key(it) }?.let(::add)
+					song.genres.forEach { MixFeatures.key(it)?.let(::add) }
+				}
+				val wanted = filter.genres.mapNotNull { MixFeatures.key(it) }.toSet()
+				if (songGenres.none { it in wanted }) return false
+			}
+
+			if (filter.moods.isNotEmpty()) {
+				val songMoods = song.moods.mapNotNull { MixFeatures.key(it) }.toSet()
+				val wanted = filter.moods.mapNotNull { MixFeatures.key(it) }.toSet()
+				if (songMoods.none { it in wanted }) return false
+			}
+
+			val seconds = song.duration.inWholeSeconds.toInt()
+			if (filter.minDurationSeconds != null && seconds < filter.minDurationSeconds) return false
+			if (filter.maxDurationSeconds != null && seconds > filter.maxDurationSeconds) return false
+
+			if (!filter.tempo.matches(song.bpm)) return false
+
+			return true
+		}
 	}
 
 	/**

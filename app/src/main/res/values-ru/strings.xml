@@ -560,4 +560,21 @@
 	<string name="option_mix_it_up_variability">Разброс</string>
 	<string name="option_mix_it_up_switch_rate">Смена направления</string>
 
+	<string name="subtitle_mix_it_up_dialog">Выберите, из чего собрать микс. Всё необязательно.</string>
+	<string name="option_mix_it_up_dont_care">Мне всё равно</string>
+	<string name="option_mix_it_up_genres">Жанры</string>
+	<string name="option_mix_it_up_moods">Настроение</string>
+	<string name="option_mix_it_up_duration">Длина</string>
+	<string name="option_mix_it_up_tempo">Темп</string>
+	<string name="option_mix_it_up_seed_artist">Базовый исполнитель</string>
+	<string name="option_mix_duration_any">Любая</string>
+	<string name="option_mix_duration_short">Короткие</string>
+	<string name="option_mix_duration_medium">Средние</string>
+	<string name="option_mix_duration_long">Длинные</string>
+	<string name="option_mix_tempo_any">Любой</string>
+	<string name="option_mix_tempo_slow">Медленный</string>
+	<string name="option_mix_tempo_medium">Средний</string>
+	<string name="option_mix_tempo_fast">Быстрый</string>
+	<string name="action_start_mix">Запустить</string>
+	<string name="snackbar_mix_empty">По этим фильтрам ничего не нашлось</string>
 </resources>

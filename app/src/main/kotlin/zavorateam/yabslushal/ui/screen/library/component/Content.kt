@@ -113,12 +113,9 @@ fun LibraryScreenContent(
 		state = state
 	) {
 		// The four quick actions stay fixed above the configurable sections.
-		// Mix It Up replaces the old "random albums" quick action: a grid of randomly ordered
-		// albums wasted the slot, while this is the real "play me something" entry point.
-		mixItUpCard(
-			icon = Icons.Outlined.QueuePlayNext,
-			onStart = onStartMixItUp
-		)
+		// The quick action grid stays a 2x2 block. Mix It Up takes exactly the slot the old
+		// "random albums" button used to occupy, so the row height and the section offsets below
+		// stay identical to the original layout.
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.LibraryAdd,
 			label = R.string.option_sort_newest,
@@ -126,16 +123,22 @@ fun LibraryScreenContent(
 			start = true
 		)
 		libraryScreenOverviewButton(
+			icon = Icons.Outlined.QueuePlayNext,
+			label = R.string.title_mix_it_up,
+			onClick = onStartMixItUp,
+			start = false
+		)
+		libraryScreenOverviewButton(
 			icon = Icons.Outlined.Heart,
 			label = R.string.option_sort_starred,
 			destination = Screen.Starred(),
-			start = false
+			start = true
 		)
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.History,
 			label = R.string.option_sort_frequent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
-			start = true
+			start = false
 		)
 
 		// Single renderer: the order and visibility come straight from the saved layout, there

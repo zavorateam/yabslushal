@@ -33,10 +33,17 @@ import zavorateam.yabslushal.di.LocalNavStack
 import zavorateam.yabslushal.ui.navigation.Screen
 import zavorateam.yabslushal.ui.theme.defaultFont
 
+/**
+ * Quick action tile of the library header.
+ *
+ * Navigation tiles pass a [destination]; the Mix It Up tile instead triggers [onClick] directly,
+ * so it keeps the exact same size, shape and position as the other three tiles.
+ */
 fun LazyGridScope.libraryScreenOverviewButton(
 	icon: ImageVector,
 	label: Int,
-	destination: NavKey,
+	destination: NavKey? = null,
+	onClick: (() -> Unit)? = null,
 	start: Boolean
 ) {
 	item(span = { GridItemSpan(1) }) {
@@ -60,8 +67,10 @@ fun LazyGridScope.libraryScreenOverviewButton(
 				contentColor = MaterialTheme.colorScheme.onSurfaceVariant
 			),
 			onClick = dropUnlessResumed {
-				if (backStack.lastOrNull() !is Screen.AlbumList) {
-					backStack.add(destination)
+				when {
+					onClick != null -> onClick()
+					destination != null && backStack.lastOrNull() !is Screen.AlbumList ->
+						backStack.add(destination)
 				}
 			}
 		) {

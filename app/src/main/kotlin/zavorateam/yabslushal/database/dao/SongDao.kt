@@ -116,6 +116,17 @@ interface SongDao {
 	@Query("SELECT * FROM SongEntity ORDER BY RANDOM() LIMIT :count")
 	suspend fun getMixCandidatePool(count: Int): List<SongEntity>
 
+	/**
+	 * Distinct mood names, comma separated in a single column because the moods live in a
+	 * `List<String>` column joined with `||`. Used to populate the Mix It Up dialog.
+	 */
+	@Query("SELECT GROUP_CONCAT(moods, '||') FROM SongEntity WHERE moods IS NOT NULL AND moods != ''")
+	suspend fun getPackedMoods(): String?
+
+	/** Distinct genre names, used to populate the Mix It Up dialog. */
+	@Query("SELECT DISTINCT genre FROM SongEntity WHERE genre IS NOT NULL AND genre != '' ORDER BY genre")
+	suspend fun getDistinctGenres(): List<String>
+
 	/** Same pool restricted to songs that are actually stored on the device. */
 	@Query("SELECT * FROM SongEntity WHERE songId IN (:downloadedIds) ORDER BY RANDOM() LIMIT :count")
 	suspend fun getMixCandidatePoolDownloaded(
