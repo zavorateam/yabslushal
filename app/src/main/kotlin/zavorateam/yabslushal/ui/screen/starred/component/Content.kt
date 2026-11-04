@@ -92,6 +92,11 @@ fun StarredScreenContent(
 	onPlaySong: (Int) -> Unit,
 	onPlayAllSongs: () -> Unit = {},
 	onShuffleSongs: () -> Unit = {},
+	/**
+	 * Whether the "shuffle" and "play" buttons are shown above the song preview.
+	 * The favorites tab hides them; the full song list reached via "see all" keeps them.
+	 */
+	showPlaybackActions: Boolean = false,
 	onSetSongRating: (Int) -> Unit,
 	onDownloadSong: (DomainSong) -> Unit,
 	onCancelDownloadSong: (DomainSong) -> Unit,
@@ -207,43 +212,45 @@ fun StarredScreenContent(
 						})
 					)
 				}
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(horizontal = 16.dp, vertical = 6.dp),
-					horizontalArrangement = Arrangement.spacedBy(10.dp),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					OutlinedButton(
-						modifier = Modifier.size(width = 52.dp, height = 44.dp),
-						onClick = onShuffleSongs,
-						shape = CircleShape,
-						contentPadding = PaddingValues(0.dp)
-					) {
-						Icon(
-							Icons.Outlined.Shuffle,
-							contentDescription = stringResource(R.string.action_shuffle),
-							modifier = Modifier.size(24.dp)
-						)
-					}
-					Button(
+				if (showPlaybackActions) {
+					Row(
 						modifier = Modifier
-							.weight(1f)
-							.height(44.dp),
-						onClick = onPlayAllSongs,
-						shape = CircleShape
+							.fillMaxWidth()
+							.padding(horizontal = 16.dp, vertical = 6.dp),
+						horizontalArrangement = Arrangement.spacedBy(10.dp),
+						verticalAlignment = Alignment.CenterVertically
 					) {
-						Icon(
-							Icons.Filled.Play,
-							null,
+						OutlinedButton(
+							modifier = Modifier.size(width = 52.dp, height = 44.dp),
+							onClick = onShuffleSongs,
+							shape = CircleShape,
+							contentPadding = PaddingValues(0.dp)
+						) {
+							Icon(
+								Icons.Outlined.Shuffle,
+								contentDescription = stringResource(R.string.action_shuffle),
+								modifier = Modifier.size(24.dp)
+							)
+						}
+						Button(
 							modifier = Modifier
-								.size(25.dp)
-								.padding(end = 3.dp)
-						)
-						Text(
-							stringResource(R.string.action_play),
-							fontWeight = FontWeight.SemiBold
-						)
+								.weight(1f)
+								.height(44.dp),
+							onClick = onPlayAllSongs,
+							shape = CircleShape
+						) {
+							Icon(
+								Icons.Filled.Play,
+								null,
+								modifier = Modifier
+									.size(25.dp)
+									.padding(end = 3.dp)
+							)
+							Text(
+								stringResource(R.string.action_play),
+								fontWeight = FontWeight.SemiBold
+							)
+						}
 					}
 				}
 				val rowCount = remember(songCount) {
