@@ -57,6 +57,19 @@ jobs:
           # exist, only "android-37.0", matching compileSdkMinor in libs.versions.toml.
           "$SDKMANAGER" --install "platforms;android-37.0" "platform-tools"
 
+      # debug.keystore is gitignored, and the debug build type signs with it by name, so the
+      # standard Android debug keystore is generated when the checkout does not contain one.
+      - name: Provide debug keystore
+        run: |
+          if [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -storepass android -keypass android \
+              -alias androiddebugkey \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
